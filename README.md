@@ -10,18 +10,6 @@ Bem-vindo ao meu espaço digital! Sou Arthur, um apaixonado por Ciência da Comp
 
 ## 💼 Experiência e Projetos
 
-**Desenvolvedor Front-End | Empresa XPTO**  
-*Período: [Data de Início] - [Data de Término]*
-
-Nesta posição, tive a oportunidade de aprimorar minhas habilidades em HTML, CSS e JavaScript, trabalhando no desenvolvimento de interfaces atraentes e responsivas. Colaborei em projetos cruciais, como [Projeto X], onde liderei a implementação de recursos interativos.
-
-**Sistema de Controle de Estoque | Projeto Acadêmico**  
-*Período: [Data de Início] - [Data de Término]*
-
-Em equipe, desenvolvi um sistema robusto em linguagem C para controle de estoque, aplicando conceitos essenciais de estruturas de dados e algoritmos. A experiência proporcionou uma compreensão mais profunda do desenvolvimento de software em nível de sistema.
-
----
-
 ## 🚀 Habilidades
 
 - **Linguagens de Programação:** HTML, CSS, JavaScript, C
