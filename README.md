@@ -12,8 +12,7 @@ Bem-vindo ao meu espaço digital! Sou Arthur, um apaixonado por Ciência da Comp
 
 ## 🚀 Habilidades
 
-- **Linguagens de Programação:** HTML, CSS, JavaScript, C
-- **Desenvolvimento Front-End:** 
+- **Linguagens de Programação:** HTML, CSS, JavaScript, C, C++,Java
 - **Banco de Dados:** 
 - **Controle de Versão:** Git, GitHub
 
@@ -22,7 +21,7 @@ Bem-vindo ao meu espaço digital! Sou Arthur, um apaixonado por Ciência da Comp
 ## 📚 Educação
 
 **Ciência da Computação | PUC Minas**  
-*Período: 1 [2024] - Presente*
+*Período: 2 [2024] - Presente*
 
 Durante meu curso, tenho adquirido conhecimento sólido em algoritmos, estruturas de dados e paradigmas de programação. Estou sempre buscando aprender e aplicar novas tecnologias para melhorar minhas habilidades técnicas.
 
@@ -30,8 +29,7 @@ Durante meu curso, tenho adquirido conhecimento sólido em algoritmos, estrutura
 
 ## 🌐 Redes Sociais
 
-- [LinkedIn](https://www.linkedin.com/in/seunome)
-- [Twitter](https://twitter.com/seunome)
+- [LinkedIn](https://www.linkedin.com/in/arthur-de-oliveira-torres-4742132ab/)
 
 ---
 
@@ -40,6 +38,7 @@ Durante meu curso, tenho adquirido conhecimento sólido em algoritmos, estrutura
 - Desenvolvimento Web
 - Algoritmos e Estruturas de Dados
 - Programação de Sistemas
+- Back End
 
 ---
 
