@@ -13,15 +13,18 @@ Bem-vindo ao meu espaço digital! Sou Arthur, um apaixonado por Ciência da Comp
 ## 🚀 Habilidades
 
 - **Linguagens de Programação:** HTML, CSS, JavaScript, C, C++,Java
-- **Banco de Dados:** 
+- **Banco de Dados:** Postgress
 - **Controle de Versão:** Git, GitHub
 
 ---
 
 ## 📚 Educação
 
-**Ciência da Computação | PUC Minas**  
-*Período: 2 [2024] - Presente*
+**Ciência da Computação | PUC Minas(Trancado)**  
+*Período: 1 [2024] - Feito*
+
+**Engenharia de Computação | Cefet-MG**  
+*Período: 1 [2024.2] - Cursando*
 
 Durante meu curso, tenho adquirido conhecimento sólido em algoritmos, estruturas de dados e paradigmas de programação. Estou sempre buscando aprender e aplicar novas tecnologias para melhorar minhas habilidades técnicas.
 
