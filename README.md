@@ -24,7 +24,7 @@ Bem-vindo ao meu espaço digital! Sou Arthur, um apaixonado por Ciência da Comp
 *Período: 1 [2024] - Feito*
 
 **Engenharia de Computação | Cefet-MG**  
-*Período: 1 [2024.2] - Cursando*
+*Período: 3 [2024.2] - Cursando*
 
 Durante meu curso, tenho adquirido conhecimento sólido em algoritmos, estruturas de dados e paradigmas de programação. Estou sempre buscando aprender e aplicar novas tecnologias para melhorar minhas habilidades técnicas.
 
@@ -43,11 +43,6 @@ Durante meu curso, tenho adquirido conhecimento sólido em algoritmos, estrutura
 - Programação de Sistemas
 - Back End
 
----
-
-## 📈 Estatísticas do GitHub
-
-![Estatísticas do GitHub](URL_DA_IMAGEM)
 
 ---
 
