@@ -1,53 +1,72 @@
-# Perfil GitHub - [Arthur Torres]
+# Arthur de Oliveira Torres
+
+**Estudante de Engenharia de Computação no CEFET-MG | Desenvolvedor em Formação**
 
 ---
 
-## 👋 Olá, mundo!
+### 👋 Sobre Mim
 
-Bem-vindo ao meu espaço digital! Sou Arthur, um apaixonado por Ciência da Computação e estudante na PUC Minas. Atualmente, estou imerso no universo da programação, explorando desde o front-end até linguagens de baixo nível, como C.
+Olá! Sou Arthur, um estudante de Engenharia de Computação apaixonado por tecnologia e pela resolução de problemas complexos. Tenho um forte interesse no desenvolvimento de software, especialmente em sistemas back-end e na aplicação de Inteligência Artificial para criar soluções inovadoras.
 
----
+Atualmente, busco oportunidades para aplicar meus conhecimentos em um ambiente profissional, colaborar em projetos desafiadores e aprender com equipes experientes.
 
-## 💼 Experiência e Projetos
-
-## 🚀 Habilidades
-
-- **Linguagens de Programação:** HTML, CSS, JavaScript, C, C++,Java
-- **Banco de Dados:** Postgress
-- **Controle de Versão:** Git, GitHub
+- 🎓 Cursando o 3º período de **Engenharia de Computação** no **CEFET-MG**.
+- 💡 Experiência prática no desenvolvimento de uma **API com IA em Python** e deploy na **AWS**.
+- 👨‍💻 Focado em aprimorar minhas habilidades em algoritmos, estruturas de dados e arquitetura de software.
+- 📫 Aberto a oportunidades de estágio e projetos freelance. Entre em contato: [LinkedIn](https://www.linkedin.com/in/arthur-de-oliveira-torres-4742132ab/).
 
 ---
 
-## 📚 Educação
+### 🚀 Habilidades Técnicas
 
-**Ciência da Computação | PUC Minas(Trancado)**  
-*Período: 1 [2024] - Feito*
-
-**Engenharia de Computação | Cefet-MG**  
-*Período: 3 [2024.2] - Cursando*
-
-Durante meu curso, tenho adquirido conhecimento sólido em algoritmos, estruturas de dados e paradigmas de programação. Estou sempre buscando aprender e aplicar novas tecnologias para melhorar minhas habilidades técnicas.
-
----
-
-## 🌐 Redes Sociais
-
-- [LinkedIn](https://www.linkedin.com/in/arthur-de-oliveira-torres-4742132ab/)
+| Categoria | Tecnologias |
+| :--- | :--- |
+| **Linguagens** | Python, Java, C, C++, JavaScript |
+| **Front-End** | HTML5, CSS3 |
+| **Back-End** | Spring Boot, APIs RESTful |
+| **Banco de Dados**| PostgreSQL |
+| **Cloud & DevOps**| AWS (Deploy), Git, GitHub |
+| **Sistemas** | Assembly (Acadêmico) |
 
 ---
 
-## 💡 Interesses
+### 💼 Projetos em Destaque
 
-- Desenvolvimento Web
-- Algoritmos e Estruturas de Dados
-- Programação de Sistemas
-- Back End
+#### API de Acessibilidade para Conteúdo Educacional
+*Um projeto que utiliza Inteligência Artificial para tornar materiais de estudo em PDF acessíveis a pessoas com diversas deficiências.*
 
+- **Minha Contribuição:** Fui responsável pelo desenvolvimento do back-end da aplicação, criando uma API RESTful em Python que processa os arquivos PDF, aplica modelos de IA para extração e adaptação de conteúdo e retorna o material em formato acessível, e o deploy na AWS.
+- **Tecnologias:** Python, FastAPI, bibliotecas de IA , AWS (EC2 para deploy), Git.
+- **Status:** MVP Concluído.
 
 ---
 
-## 🤝 Let's Connect!
+### 📚 Formação Acadêmica
 
-Estou aberto a colaborações e oportunidades emocionantes! Se você está procurando um desenvolvedor dedicado e entusiasmado, sinta-se à vontade para entrar em contato.
+**Engenharia de Computação** | **CEFET-MG**
+- **Período:** Cursando o 3º período (Início: 2024.2)
+- **Previsão de Conclusão:** 2029.2
+- **Principais Aprendizados:** Algoritmos e Estruturas de Dados (C/C++), Programação Orientada a Objetos (Java), Arquitetura de Computadores (Assembly), Lógica de Programação (C), Complexidade de Algoritmos.
+
+**Ciência da Computação** | **PUC Minas**
+- *1º Período Concluído (2024.1)*
+
+---
+
+### 💡 Interesses
+
+🧠 **Inteligência Artificial:** Explorando modelos para processamento de linguagem natural e visão computacional.
+⚙️ **Desenvolvimento Back-end:** Construção de APIs robustas, seguras e escaláveis.
+🖥️ **Programação de Sistemas:** Entender como o software interage com o hardware em baixo nível.
+📊 **Algoritmos e Estruturas de Dados:** Paixão pela otimização e eficiência de código.
+
+---
+
+### 🌐 Vamos Conectar!
+
+Estou sempre aberto a novas conexões, colaborações e oportunidades de aprendizado. Sinta-se à vontade para entrar em contato!
+
+- **LinkedIn:** [linkedin.com/in/arthur-de-oliveira-torres](https://www.linkedin.com/in/arthur-de-oliveira-torres-4742132ab/)
+- **Email:** `dev.arthurtorres@gmail.com` (Substitua pelo seu email)
 
 *Vamos construir algo incrível juntos!* 👨‍💻✨
