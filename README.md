@@ -10,7 +10,7 @@ Olá! Sou Arthur, um estudante de Engenharia de Computação apaixonado por tecn
 
 Atualmente, busco oportunidades para aplicar meus conhecimentos em um ambiente profissional, colaborar em projetos desafiadores e aprender com equipes experientes.
 
-- 🎓 Cursando o 3º período de **Engenharia de Computação** no **CEFET-MG**.
+- 🎓 Cursando o 4º período de **Engenharia de Computação** no **CEFET-MG**.
 - 💡 Experiência prática no desenvolvimento de uma **API com IA em Python** e deploy na **AWS**.
 - 👨‍💻 Focado em aprimorar minhas habilidades em algoritmos, estruturas de dados e arquitetura de software.
 - 📫 Aberto a oportunidades de estágio e projetos freelance. Entre em contato: [LinkedIn](https://www.linkedin.com/in/arthur-de-oliveira-torres-4742132ab/).
@@ -44,7 +44,7 @@ Atualmente, busco oportunidades para aplicar meus conhecimentos em um ambiente p
 ### 📚 Formação Acadêmica
 
 **Engenharia de Computação** | **CEFET-MG**
-- **Período:** Cursando o 3º período (Início: 2024.2)
+- **Período:** Cursando o 4º período (Início: 2024.2)
 - **Previsão de Conclusão:** 2029.2
 - **Principais Aprendizados:** Algoritmos e Estruturas de Dados (C/C++), Programação Orientada a Objetos (Java), Arquitetura de Computadores (Assembly), Lógica de Programação (C), Complexidade de Algoritmos.
 
@@ -67,6 +67,6 @@ Atualmente, busco oportunidades para aplicar meus conhecimentos em um ambiente p
 Estou sempre aberto a novas conexões, colaborações e oportunidades de aprendizado. Sinta-se à vontade para entrar em contato!
 
 - **LinkedIn:** [linkedin.com/in/arthur-de-oliveira-torres](https://www.linkedin.com/in/arthur-de-oliveira-torres-4742132ab/)
-- **Email:** `dev.arthurtorres@gmail.com` (Substitua pelo seu email)
+- **Email:** `dev.arthurtorres@gmail.com` 
 
-*Vamos construir algo incrível juntos!* 👨‍💻✨
+
