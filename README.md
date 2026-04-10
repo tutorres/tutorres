@@ -66,7 +66,7 @@ Atualmente, busco oportunidades para aplicar meus conhecimentos em um ambiente p
 
 Estou sempre aberto a novas conexões, colaborações e oportunidades de aprendizado. Sinta-se à vontade para entrar em contato!
 
-- **LinkedIn:** (https://www.linkedin.com/in/torres-arthur/)](https://www.linkedin.com/in/torres-arthur/))
+- **LinkedIn:** (https://www.linkedin.com/in/torres-arthur/)
 - **Email:** `dev.arthurtorres@gmail.com` 
 
 
