@@ -1,72 +1,75 @@
-# Arthur de Oliveira Torres
+# Arthur Torres
 
-**Estudante de Engenharia de Computação no CEFET-MG | Desenvolvedor em Formação**
+**Data & Automation Engineer** · Belo Horizonte, Brazil
 
----
+Building data pipelines and AI-powered automations that reduce manual work and support operational decisions.
 
-### 👋 Sobre Mim
-
-Olá! Sou Arthur, um estudante de Engenharia de Computação apaixonado por tecnologia e pela resolução de problemas complexos. Tenho um forte interesse no desenvolvimento de software, especialmente em sistemas back-end e na aplicação de Inteligência Artificial para criar soluções inovadoras.
-
-Atualmente, busco oportunidades para aplicar meus conhecimentos em um ambiente profissional, colaborar em projetos desafiadores e aprender com equipes experientes.
-
-- 🎓 Cursando o 4º período de **Engenharia de Computação** no **CEFET-MG**.
-- 💡 Experiência prática no desenvolvimento de uma **API com IA em Python** e deploy na **AWS**.
-- 👨‍💻 Focado em aprimorar minhas habilidades em algoritmos, estruturas de dados e arquitetura de software.
-- 📫 Aberto a oportunidades de estágio e projetos freelance. Entre em contato: [LinkedIn](https://www.linkedin.com/in/arthur-de-oliveira-torres-4742132ab/).
+Currently at **Banco Inter** (Global Operations) — Python automations, LLM agents, SQL dashboards.
+Previously at **Akyou** — end-to-end PDF accessibility solution with OpenAI API.
+Studying **Computer Engineering at CEFET-MG** (4th semester, graduating 2029).
 
 ---
 
-### 🚀 Habilidades Técnicas
+## Stack
 
-| Categoria | Tecnologias |
-| :--- | :--- |
-| **Linguagens** | Python, Java, C, C++, JavaScript |
-| **Front-End** | HTML5, CSS3 |
-| **Back-End** | Spring Boot, APIs RESTful |
-| **Banco de Dados**| PostgreSQL |
-| **Cloud & DevOps**| AWS (Deploy), Git, GitHub |
-| **Sistemas** | Assembly (Acadêmico) |
+**Strong**
+`Python` `SQL` `Tableau` `LLM Agents` `Process Automation`
 
----
+**Building**
+`PyTorch` `DuckDB` `AWS` `Apache Airflow`
 
-### 💼 Projetos em Destaque
-
-#### API de Acessibilidade para Conteúdo Educacional
-*Um projeto que utiliza Inteligência Artificial para tornar materiais de estudo em PDF acessíveis a pessoas com diversas deficiências.*
-
-- **Minha Contribuição:** Fui responsável pelo desenvolvimento do back-end da aplicação, criando uma API RESTful em Python que processa os arquivos PDF, aplica modelos de IA para extração e adaptação de conteúdo e retorna o material em formato acessível, e o deploy na AWS.
-- **Tecnologias:** Python, FastAPI, bibliotecas de IA , AWS (EC2 para deploy), Git.
-- **Status:** MVP Concluído.
+**Familiar**
+`Streamlit` `Plotly` `FastAPI` `Git`
 
 ---
 
-### 📚 Formação Acadêmica
+## Projects
 
-**Engenharia de Computação** | **CEFET-MG**
-- **Período:** Cursando o 4º período (Início: 2024.2)
-- **Previsão de Conclusão:** 2029.2
-- **Principais Aprendizados:** Algoritmos e Estruturas de Dados (C/C++), Programação Orientada a Objetos (Java), Arquitetura de Computadores (Assembly), Lógica de Programação (C), Complexidade de Algoritmos.
+### Financial Intelligence Dashboard
+> End-to-end financial data pipeline with medallion architecture, LSTM trend classification and Text-to-SQL LLM interface.
 
-**Ciência da Computação** | **PUC Minas**
-- *1º Período Concluído (2024.1)*
+`Python` `DuckDB` `PyTorch` `Groq API` `Streamlit`
 
----
-
-### 💡 Interesses
-
-🧠 **Inteligência Artificial:** Explorando modelos para processamento de linguagem natural e visão computacional.
-⚙️ **Desenvolvimento Back-end:** Construção de APIs robustas, seguras e escaláveis.
-🖥️ **Programação de Sistemas:** Entender como o software interage com o hardware em baixo nível.
-📊 **Algoritmos e Estruturas de Dados:** Paixão pela otimização e eficiência de código.
+🔗 [GitHub](#) · [Live Demo](#) *(coming June 2026)*
 
 ---
 
-### 🌐 Vamos Conectar!
+### Vale Desenvolver 2026 — Mining Fleet Telemetry
+> Predictive analytics on 37M+ telemetry records from an iron ore mining fleet. Built for Vale's Programa Desenvolver 2026.
 
-Estou sempre aberto a novas conexões, colaborações e oportunidades de aprendizado. Sinta-se à vontade para entrar em contato!
+`Python` `Pandas` `XGBoost` `SHAP` `DuckDB`
 
-- **LinkedIn:** (https://www.linkedin.com/in/torres-arthur/)
-- **Email:** `dev.arthurtorres@gmail.com` 
+🔗 [GitHub](#) *(coming July 2026)*
 
+---
 
+### PDF Accessibility Solution *(Akyou)*
+> Automated PDF accessibility pipeline using OpenAI API — extracting and restructuring complex document content for end users.
+
+`Python` `OpenAI API` `LLM Pipelines`
+
+*Private — company project*
+
+---
+
+## Certifications
+
+- **Lean Six Sigma Yellow Belt** — Thoth / CSSC · 2026
+- **AWS Cloud Practitioner** — *in progress*
+- **EF SET C1/C2** — *in progress*
+
+---
+
+## Writing
+
+Technical articles on what I build and why — published after each project ships.
+
+- *How I built a financial data pipeline using the medallion architecture* *(coming soon)*
+- *Training my first LSTM for stock trend classification* *(coming soon)*
+- *Building a Text-to-SQL interface with LLMs and DuckDB* *(coming soon)*
+
+---
+
+## Connect
+
+[LinkedIn](https://linkedin.com/in/torres-arthur) · [Email](mailto:arthuroliveiratorres@gmail.com) · [torres.dev](#)
