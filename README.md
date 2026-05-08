@@ -4,21 +4,21 @@
 
 Building data pipelines and AI-powered automations that reduce manual work and support operational decisions.
 
-Currently at **Banco Inter** (Global Operations) — Python automations, LLM agents, SQL dashboards.
-Previously at **Akyou** — end-to-end PDF accessibility solution with OpenAI API.
+Currently at **Banco Inter** (Global Operations) — Python automations, LLM agents, SQL dashboards.  
+Previously at **Akyou** — end-to-end PDF accessibility solution with OpenAI API.  
 Studying **Computer Engineering at CEFET-MG** (4th semester, graduating 2029).
 
 ---
 
 ## Stack
 
-**Strong**
+**Strong**  
 `Python` `SQL` `Tableau` `LLM Agents` `Process Automation`
 
-**Building**
+**Building**  
 `PyTorch` `DuckDB` `AWS` `Apache Airflow`
 
-**Familiar**
+**Familiar**  
 `Streamlit` `Plotly` `FastAPI` `Git`
 
 ---
@@ -26,11 +26,13 @@ Studying **Computer Engineering at CEFET-MG** (4th semester, graduating 2029).
 ## Projects
 
 ### Financial Intelligence Dashboard
-> End-to-end financial data pipeline with medallion architecture, LSTM trend classification and Text-to-SQL LLM interface.
+> End-to-end financial data pipeline with medallion architecture (bronze/silver/gold), LSTM trend classification and Text-to-SQL LLM interface via Groq. Real-time market data, technical indicators (RSI, MACD, MA), and natural language chat per ticker.
 
-`Python` `DuckDB` `PyTorch` `Groq API` `Streamlit`
+`Python` `DuckDB` `PyTorch` `Groq API` `Streamlit` `Pandas` `Plotly`
 
-🔗 [GitHub](#) · [Live Demo](#) *(coming June 2026)*
+🔗 [GitHub](https://github.com/tutorres/financial-intelligence-dashboard) · [Live Demo](https://financial-intelligence-dashboard-arthurtorres.streamlit.app)
+
+> ⚠️ App may take ~1 min to wake up on first load (Streamlit free tier).
 
 ---
 
@@ -39,7 +41,7 @@ Studying **Computer Engineering at CEFET-MG** (4th semester, graduating 2029).
 
 `Python` `Pandas` `XGBoost` `SHAP` `DuckDB`
 
-🔗 [GitHub](#) *(coming July 2026)*
+🔗 GitHub *(coming July 2026)*
 
 ---
 
@@ -55,8 +57,7 @@ Studying **Computer Engineering at CEFET-MG** (4th semester, graduating 2029).
 ## Certifications
 
 - **Lean Six Sigma Yellow Belt** — Thoth / CSSC · 2026
-- **AWS Cloud Practitioner** — *in progress*
-- **EF SET C1/C2** — *in progress*
+- **EF SET C1 English** — 65/100 · May 2026
 
 ---
 
@@ -72,4 +73,4 @@ Technical articles on what I build and why — published after each project ship
 
 ## Connect
 
-[LinkedIn](https://linkedin.com/in/torres-arthur) · [Email](mailto:arthuroliveiratorres@gmail.com) · [torres.dev](#)
+[LinkedIn](https://linkedin.com/in/torres-arthur) · [Email](mailto:arthuroliveiratorres@gmail.com) · [torres-dev-dun.vercel.app](https://torres-dev-dun.vercel.app)
