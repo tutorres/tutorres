@@ -61,16 +61,6 @@ Studying **Computer Engineering at CEFET-MG** (4th semester, graduating 2029).
 
 ---
 
-## Writing
-
-Technical articles on what I build and why — published after each project ships.
-
-- *How I built a financial data pipeline using the medallion architecture* *(coming soon)*
-- *Training my first LSTM for stock trend classification* *(coming soon)*
-- *Building a Text-to-SQL interface with LLMs and DuckDB* *(coming soon)*
-
----
-
 ## Connect
 
 [LinkedIn](https://linkedin.com/in/torres-arthur) · [Email](mailto:arthuroliveiratorres@gmail.com) · [torres-dev-dun.vercel.app](https://torres-dev-dun.vercel.app)
