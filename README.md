@@ -32,7 +32,7 @@ Studying **Computer Engineering at CEFET-MG** (4th semester, graduating 2029).
 
 🔗 [GitHub](https://github.com/tutorres/Financial-Intelligence-Dashboard) · [Live Demo](https://financial-intelligence-dashboard-arthurtorres.streamlit.app) · [▶ Demo Video](https://www.youtube.com/watch?v=fsYFGR9y_AA)
 
-[![Financial Intelligence Dashboard Demo](https://img.youtube.com/vi/SEU_VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=fsYFGR9y_AA)
+[![Financial Intelligence Dashboard Demo](https://img.youtube.com/vi/fsYFGR9y_AA/maxresdefault.jpg)](https://www.youtube.com/watch?v=fsYFGR9y_AA)
 > ⚠️ App may take ~1 min to wake up on first load (Streamlit free tier).
 
 ---
