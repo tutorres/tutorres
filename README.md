@@ -30,7 +30,7 @@ Studying **Computer Engineering at CEFET-MG** (4th semester, graduating 2029).
 
 `Python` `DuckDB` `PyTorch` `Groq API` `Streamlit` `Pandas` `Plotly`
 
-🔗 [GitHub](https://github.com/tutorres/financial-intelligence-dashboard) · [Live Demo](https://financial-intelligence-dashboard-arthurtorres.streamlit.app)
+🔗 [GitHub](https://github.com/tutorres/Financial-Intelligence-Dashboard) · [Live Demo](https://financial-intelligence-dashboard-arthurtorres.streamlit.app) · [▶ Demo Video](https://www.youtube.com/watch?v=fsYFGR9y_AA)
 
 > ⚠️ App may take ~1 min to wake up on first load (Streamlit free tier).
 
