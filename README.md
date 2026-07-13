@@ -62,4 +62,4 @@ Studying **Computer Engineering at CEFET-MG** (5th semester, graduating 2030).
 
 ## Connect
 
-[LinkedIn](https://linkedin.com/in/torres-arthur) · [Email](mailto:arthuroliveiratorres@gmail.com) · [torres-dev-data.vercel.app](https://torres-dev-data.vercel.app)
+[LinkedIn](https://linkedin.com/in/torres-arthur) · [Email](mailto:arthuroliveiratorres@gmail.com) · [torres-dev-data.vercel.app](https://torres-dev-ai.vercel.app)
