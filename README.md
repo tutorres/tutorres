@@ -1,25 +1,24 @@
 # Arthur Torres
+**AI Engineer** · Belo Horizonte, Brazil
 
-**Data & Automation Engineer** · Belo Horizonte, Brazil
+Building AI-powered systems and automations that solve real operational problems.
 
-Building data pipelines and AI-powered automations that reduce manual work and support operational decisions.
-
-Currently at **Banco Inter** (Global Operations) — Python automations, LLM agents, SQL dashboards.  
+Currently at **Banco Inter** (Global Operations) — LLM agents, Python automations, and pipelines saving 1.4 FTEs in under 7 months.  
 Previously at **Akyou** — end-to-end PDF accessibility solution with OpenAI API.  
-Studying **Computer Engineering at CEFET-MG** (4th semester, graduating 2029).
+Studying **Computer Engineering at CEFET-MG** (5th semester, graduating 2030).
 
 ---
 
 ## Stack
 
 **Strong**  
-`Python` `SQL` `Tableau` `LLM Agents` `Process Automation`
+`Python` `SQL` `FastAPI` `LLM Agents` `n8n` `Docker`
 
 **Building**  
-`PyTorch` `DuckDB` `AWS` `Apache Airflow`
+`LangChain` `RAG` `ChromaDB` `AWS` `Apache Airflow`
 
 **Familiar**  
-`Streamlit` `Plotly` `FastAPI` `Git`
+`PyTorch` `DuckDB` `Streamlit` `Plotly` `Kubernetes`
 
 ---
 
@@ -33,16 +32,15 @@ Studying **Computer Engineering at CEFET-MG** (4th semester, graduating 2029).
 🔗 [GitHub](https://github.com/tutorres/Financial-Intelligence-Dashboard) · [Live Demo](https://financial-intelligence-dashboard-arthurtorres.streamlit.app) · [▶ Demo Video](https://www.youtube.com/watch?v=fsYFGR9y_AA)
 
 [![Financial Intelligence Dashboard Demo](https://img.youtube.com/vi/fsYFGR9y_AA/maxresdefault.jpg)](https://www.youtube.com/watch?v=fsYFGR9y_AA)
+
 > ⚠️ App may take ~1 min to wake up on first load (Streamlit free tier).
 
 ---
 
 ### Vale Desenvolver 2026 — Mining Fleet Telemetry
-> Predictive analytics on 37M+ telemetry records from an iron ore mining fleet. Built for Vale's Programa Desenvolver 2026.
+> End-to-end predictive pipeline to anticipate critical failures on 37M+ telemetry records from an iron ore mining fleet. ETL at scale, XGBoost/LightGBM, temporal validation, SHAP explainability, and 93 unit tests.
 
-`Python` `Pandas` `XGBoost` `SHAP` `DuckDB`
-
-🔗 GitHub *(coming July 2026)*
+`Python` `Pandas` `XGBoost` `LightGBM` `SHAP` `DuckDB` `pytest`
 
 ---
 
