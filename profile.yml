@@ -1,0 +1,113 @@
+# Single source of truth for the profile README.
+#
+# Edit this file, then run:
+#   python scripts/build_profile.py
+#
+# Everything under assets/generated/ is derived. Never edit those SVGs by hand,
+# the next build overwrites them.
+
+theme:
+  # Matches torres-dev-ai.vercel.app so the two artifacts read as one system.
+  background: "#0a0a0a"
+  surface: "#111111"
+  border: "#27272a"
+  text: "#fafafa"
+  muted: "#a1a1aa"
+  accent: "#22d3ee"
+
+hero:
+  name: "Arthur Torres"
+  tagline: "I build AI systems and show how I know they work."
+
+status:
+  text: "AI & Automation at Banco Inter. Researching LLM models for market prediction at CEFET-MG."
+
+contact:
+  - id: linkedin
+    label: "LinkedIn"
+    url: "https://linkedin.com/in/torres-arthur"
+  - id: email
+    label: "Email"
+    url: "mailto:arthuroliveiratorres@gmail.com"
+  - id: github
+    label: "GitHub"
+    url: "https://github.com/tutorres"
+  - id: website
+    label: "Website"
+    url: "https://torres-dev-ai.vercel.app"
+
+featured:
+  heading: "Featured work"
+  items:
+    - title: "Predictive Maintenance at Scale"
+      eyebrow: "MACHINE LEARNING · VALE DESENVOLVER 2026"
+      body: >-
+        37,164,054 telemetry records from an iron ore mine. Temporal split, three
+        baselines, and a SHAP error analysis that documents what the model gets wrong.
+      url: "https://github.com/tutorres/Vale_Desenvolver"
+    - title: "One Bug Hit 11 Rows. Another Hit 36 Million."
+      eyebrow: "WRITING · DATA QUALITY"
+      body: >-
+        Four silent data quality failures across 37M rows. None of them threw an
+        exception, and one reported the column as fully populated while it was empty.
+      url: "https://torres-dev-ai.vercel.app/articles/data-quality-37m-rows"
+    - title: "Financial Intelligence Dashboard"
+      eyebrow: "DATA PIPELINE · LLM"
+      body: >-
+        Medallion pipeline over market data with LSTM trend classification and a
+        Text-to-SQL interface, so the analysis can be questioned in plain language.
+      url: "https://github.com/tutorres/Financial-Intelligence-Dashboard"
+
+current:
+  heading: "Currently working on"
+  items:
+    - label: "AI & Automation @ Banco Inter"
+      note: "LLM AGENTS · MCP · TOOL DESIGN"
+      body: >-
+        Production agents inside a regulated bank. System prompts, tool design and MCP
+        integrations. Nine automations, 1.4 FTE of manual work removed in seven months.
+    - label: "LLM for Market Prediction"
+      note: "UNDERGRADUATE RESEARCH · CEFET-MG"
+      body: >-
+        Hybrid models combining financial time series, sentiment extracted by LLMs and
+        constrained portfolio optimization, benchmarked against each approach alone.
+    - label: "JobFinder"
+      note: "AGENTIC PIPELINE"
+      body: >-
+        Remote job pipeline that retrieves, scores and explains matches against a
+        profile, built to be measured rather than demoed.
+      # No url until the repo is public. Linking to the profile from the profile
+      # is a dead end, and publishing it needs the IP clause checked first.
+    - label: "TMB Scan"
+      note: "NEXT.JS · REACT · SUPABASE"
+      body: >-
+        Physical assessment platform for a paying client. Structured evaluations turned
+        into professional PDF reports.
+    - label: "torres.dev"
+      note: "PORTFOLIO"
+      body: >-
+        The site this profile points at. Case studies, writing, and the evidence behind
+        every claim.
+      url: "https://torres-dev-ai.vercel.app"
+
+certifications:
+  heading: "Certifications"
+  # `short` is what fits on the chip. `detail` is the full text and only appears
+  # in the accessible version, so the chips stay on one or two rows.
+  items:
+    - label: "Programa Desenvolver 2026"
+      short: "Desenvolver 2026 · Vale"
+      detail: "Vale · Data Analysis · challenge completed, not placed"
+      status: "DONE"
+    - label: "Lean Six Sigma Yellow Belt"
+      short: "Lean Six Sigma · Yellow Belt"
+      detail: "Thoth / CSSC"
+      status: "DONE"
+    - label: "EF SET English"
+      short: "EF SET · C1"
+      detail: "C1 · 65/100 · C2 listening"
+      status: "DONE"
+    - label: "Claude Code 101"
+      short: "Claude Code 101"
+      detail: "Anthropic"
+      status: "DONE"

@@ -1,65 +1,88 @@
-# Arthur Torres
-**AI Engineer** · Belo Horizonte, Brazil
+<div align="center">
+<picture><source media="(max-width: 480px)" srcset="./assets/generated/hero-mobile.svg"><img src="./assets/generated/hero-desktop.svg" width="100%" alt="Arthur Torres. I build AI systems and show how I know they work."></picture>
+<picture><source media="(max-width: 480px)" srcset="./assets/generated/status-mobile.svg"><img src="./assets/generated/status-desktop.svg" width="100%" alt="AI &amp; Automation at Banco Inter. Researching LLM models for market prediction at CEFET-MG."></picture>
+</div>
 
-Building AI-powered systems and automations that solve real operational problems.
+<br>
 
-Currently at **Banco Inter** (Global Operations) — LLM agents, Python automations, and pipelines saving 1.4 FTEs in under 7 months.  
-Previously at **Akyou** — end-to-end PDF accessibility solution with OpenAI API.  
-Studying **Computer Engineering at CEFET-MG** (5th semester, graduating 2030).
+<p align="center">
+<a href="https://linkedin.com/in/torres-arthur"><picture><source media="(max-width: 480px)" srcset="./assets/generated/contact-linkedin-mobile.svg"><img src="./assets/generated/contact-linkedin-desktop.svg" alt="LinkedIn"></picture></a><a href="mailto:arthuroliveiratorres@gmail.com"><picture><source media="(max-width: 480px)" srcset="./assets/generated/contact-email-mobile.svg"><img src="./assets/generated/contact-email-desktop.svg" alt="Email"></picture></a><a href="https://github.com/tutorres"><picture><source media="(max-width: 480px)" srcset="./assets/generated/contact-github-mobile.svg"><img src="./assets/generated/contact-github-desktop.svg" alt="GitHub"></picture></a><a href="https://torres-dev-ai.vercel.app"><picture><source media="(max-width: 480px)" srcset="./assets/generated/contact-website-mobile.svg"><img src="./assets/generated/contact-website-desktop.svg" alt="Website"></picture></a>
+</p>
 
----
+<picture><source media="(max-width: 480px)" srcset="./assets/generated/featured-header-mobile.svg"><img src="./assets/generated/featured-header-desktop.svg" width="100%" alt="Featured work"></picture>
 
-## Stack
+<a href="https://github.com/tutorres/Vale_Desenvolver"><picture><source media="(max-width: 480px)" srcset="./assets/generated/featured-0-mobile.svg"><img src="./assets/generated/featured-0-desktop.svg" width="100%" alt="Predictive Maintenance at Scale"></picture></a>
+<a href="https://torres-dev-ai.vercel.app/articles/data-quality-37m-rows"><picture><source media="(max-width: 480px)" srcset="./assets/generated/featured-1-mobile.svg"><img src="./assets/generated/featured-1-desktop.svg" width="100%" alt="One Bug Hit 11 Rows. Another Hit 36 Million."></picture></a>
+<a href="https://github.com/tutorres/Financial-Intelligence-Dashboard"><picture><source media="(max-width: 480px)" srcset="./assets/generated/featured-2-mobile.svg"><img src="./assets/generated/featured-2-desktop.svg" width="100%" alt="Financial Intelligence Dashboard"></picture></a>
 
-**Strong**  
-`Python` `SQL` `FastAPI` `LLM Agents` `n8n` `Docker`
+<picture><source media="(max-width: 480px)" srcset="./assets/generated/current-header-mobile.svg"><img src="./assets/generated/current-header-desktop.svg" width="100%" alt="Currently working on"></picture>
 
-**Building**  
-`LangChain` `RAG` `ChromaDB` `AWS` `Apache Airflow`
+<picture><source media="(max-width: 480px)" srcset="./assets/generated/current-0-mobile.svg"><img src="./assets/generated/current-0-desktop.svg" width="100%" alt="AI &amp; Automation @ Banco Inter"></picture>
+<picture><source media="(max-width: 480px)" srcset="./assets/generated/current-1-mobile.svg"><img src="./assets/generated/current-1-desktop.svg" width="100%" alt="LLM for Market Prediction"></picture>
+<picture><source media="(max-width: 480px)" srcset="./assets/generated/current-2-mobile.svg"><img src="./assets/generated/current-2-desktop.svg" width="100%" alt="JobFinder"></picture>
+<picture><source media="(max-width: 480px)" srcset="./assets/generated/current-3-mobile.svg"><img src="./assets/generated/current-3-desktop.svg" width="100%" alt="TMB Scan"></picture>
+<a href="https://torres-dev-ai.vercel.app"><picture><source media="(max-width: 480px)" srcset="./assets/generated/current-4-mobile.svg"><img src="./assets/generated/current-4-desktop.svg" width="100%" alt="torres.dev"></picture></a>
 
-**Familiar**  
-`PyTorch` `DuckDB` `Streamlit` `Plotly` `Kubernetes`
+<picture><source media="(max-width: 480px)" srcset="./assets/generated/certifications-header-mobile.svg"><img src="./assets/generated/certifications-header-desktop.svg" width="100%" alt="Certifications"></picture>
 
----
+<p align="center">
+<picture><source media="(max-width: 480px)" srcset="./assets/generated/cert-0-mobile.svg"><img src="./assets/generated/cert-0-desktop.svg" alt="Programa Desenvolver 2026 — Vale · Data Analysis · challenge completed, not placed"></picture><picture><source media="(max-width: 480px)" srcset="./assets/generated/cert-1-mobile.svg"><img src="./assets/generated/cert-1-desktop.svg" alt="Lean Six Sigma Yellow Belt — Thoth / CSSC"></picture><picture><source media="(max-width: 480px)" srcset="./assets/generated/cert-2-mobile.svg"><img src="./assets/generated/cert-2-desktop.svg" alt="EF SET English — C1 · 65/100 · C2 listening"></picture><picture><source media="(max-width: 480px)" srcset="./assets/generated/cert-3-mobile.svg"><img src="./assets/generated/cert-3-desktop.svg" alt="Claude Code 101 — Anthropic"></picture>
+</p>
 
-## Projects
+<details>
+<summary>Accessible text version</summary>
 
-### Financial Intelligence Dashboard
-> End-to-end financial data pipeline with medallion architecture (bronze/silver/gold), LSTM trend classification and Text-to-SQL LLM interface via Groq. Real-time market data, technical indicators (RSI, MACD, MA), and natural language chat per ticker.
+## Featured work
 
-`Python` `DuckDB` `PyTorch` `Groq API` `Streamlit` `Pandas` `Plotly`
+### [Predictive Maintenance at Scale](https://github.com/tutorres/Vale_Desenvolver)
+*MACHINE LEARNING · VALE DESENVOLVER 2026*
 
-🔗 [GitHub](https://github.com/tutorres/Financial-Intelligence-Dashboard) · [Live Demo](https://financial-intelligence-dashboard-arthurtorres.streamlit.app) · [▶ Demo Video](https://www.youtube.com/watch?v=fsYFGR9y_AA)
+37,164,054 telemetry records from an iron ore mine. Temporal split, three baselines, and a SHAP error analysis that documents what the model gets wrong.
 
-[![Financial Intelligence Dashboard Demo](https://img.youtube.com/vi/fsYFGR9y_AA/maxresdefault.jpg)](https://www.youtube.com/watch?v=fsYFGR9y_AA)
+### [One Bug Hit 11 Rows. Another Hit 36 Million.](https://torres-dev-ai.vercel.app/articles/data-quality-37m-rows)
+*WRITING · DATA QUALITY*
 
-> ⚠️ App may take ~1 min to wake up on first load (Streamlit free tier).
+Four silent data quality failures across 37M rows. None of them threw an exception, and one reported the column as fully populated while it was empty.
 
----
+### [Financial Intelligence Dashboard](https://github.com/tutorres/Financial-Intelligence-Dashboard)
+*DATA PIPELINE · LLM*
 
-### Vale Desenvolver 2026 — Mining Fleet Telemetry
-> End-to-end predictive pipeline to anticipate critical failures on 37M+ telemetry records from an iron ore mining fleet. ETL at scale, XGBoost/LightGBM, temporal validation, SHAP explainability, and 93 unit tests.
+Medallion pipeline over market data with LSTM trend classification and a Text-to-SQL interface, so the analysis can be questioned in plain language.
 
-`Python` `Pandas` `XGBoost` `LightGBM` `SHAP` `DuckDB` `pytest`
+## Currently working on
 
----
+### AI & Automation @ Banco Inter
+*LLM AGENTS · MCP · TOOL DESIGN*
 
-### PDF Accessibility Solution *(Akyou)*
-> Automated PDF accessibility pipeline using OpenAI API — extracting and restructuring complex document content for end users.
+Production agents inside a regulated bank. System prompts, tool design and MCP integrations. Nine automations, 1.4 FTE of manual work removed in seven months.
 
-`Python` `OpenAI API` `LLM Pipelines`
+### LLM for Market Prediction
+*UNDERGRADUATE RESEARCH · CEFET-MG*
 
-*Private — company project*
+Hybrid models combining financial time series, sentiment extracted by LLMs and constrained portfolio optimization, benchmarked against each approach alone.
 
----
+### JobFinder
+*AGENTIC PIPELINE*
+
+Remote job pipeline that retrieves, scores and explains matches against a profile, built to be measured rather than demoed.
+
+### TMB Scan
+*NEXT.JS · REACT · SUPABASE*
+
+Physical assessment platform for a paying client. Structured evaluations turned into professional PDF reports.
+
+### [torres.dev](https://torres-dev-ai.vercel.app)
+*PORTFOLIO*
+
+The site this profile points at. Case studies, writing, and the evidence behind every claim.
 
 ## Certifications
 
-- **Lean Six Sigma Yellow Belt** — Thoth / CSSC · 2026
-- **EF SET C1 English** — 65/100 · May 2026
+- **Programa Desenvolver 2026** — Vale · Data Analysis · challenge completed, not placed
+- **Lean Six Sigma Yellow Belt** — Thoth / CSSC
+- **EF SET English** — C1 · 65/100 · C2 listening
+- **Claude Code 101** — Anthropic
 
----
+</details>
 
-## Connect
-
-[LinkedIn](https://linkedin.com/in/torres-arthur) · [Email](mailto:arthuroliveiratorres@gmail.com) · [torres-dev-ai.vercel.app](https://torres-dev-ai.vercel.app)
+<!-- Generated from profile.yml. Edit profile.yml, then run python scripts/build_profile.py. -->
