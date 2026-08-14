@@ -36,8 +36,6 @@ OUT_DIR = ROOT / "assets" / "generated"
 README = ROOT / "README.md"
 PREVIEW = ROOT / "assets" / "preview"
 
-XML_DECL = '<?xml version="1.0" encoding="UTF-8"?>'
-
 # Light values are inline; the media query swaps them on a dark GitHub.
 INK, INK_D = "#1f2328", "#e6edf3"
 MUTED, MUTED_D = "#57606a", "#8b949e"
@@ -145,7 +143,7 @@ def card_rect(w: float, h: float) -> str:
 
 def svg(w: float, h: float, body: str) -> str:
     return (
-        f'{XML_DECL}<svg xmlns="http://www.w3.org/2000/svg" width="{w:.0f}" '
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{w:.0f}" '
         f'height="{h:.0f}" viewBox="0 0 {w:.0f} {h:.0f}">{DARK}{body}</svg>'
     )
 
