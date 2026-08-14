@@ -319,6 +319,97 @@ def build_cert(i: int, item: dict[str, Any], s: Size) -> None:
 # --------------------------------------------------------------------------- #
 
 
+
+def build_all(cfg: dict[str, Any], s: Size) -> None:
+    """Every visual block in one asset.
+
+    The profile previously shipped seventeen separate images. GitHub serves
+    same-repo README images straight from /raw/, which is rate limited, so a
+    different random subset failed on each page load and the profile looked
+    broken in a different place every time. One request removes the failure mode
+    entirely. The cost is that the blocks are no longer individually linkable,
+    which the accessible text section below already covers.
+    """
+    w = s.width
+    parts: list[str] = []
+    y = 0.0
+
+    def place(markup: str, height: float, gap: float = 0) -> None:
+        nonlocal y
+        parts.append(f'<g transform="translate(0,{y:.1f})">{markup}</g>')
+        y += height + gap
+
+    head = wrap(cfg["hero"]["headline"], s.head, w - 8, SERIF_R)
+    copy = wrap(cfg["hero"]["copy"], s.copy, w - 8, MONO_R)
+    hb = [hline(6, 2, w - 2)]
+    hy = 16 + s.head
+    part, hy = block(head, 4, hy, s.head * 1.28, fs=s.head, font=SERIF, fill=INK,
+                     cls="ink", weight="600", italic=True)
+    hb.append(part)
+    hy += s.copy * 2.7
+    part, hy = block(copy, 5, hy, s.copy * 1.6, fs=s.copy, font=MONO, fill=MUTED, cls="muted")
+    hb.append(part)
+    hy += 20
+    hb.append(hline(hy, 2, w - 2))
+    place("".join(hb), hy + 6)
+
+    col = w / len(cfg["status"])
+    sb = [hline(0.5, 0, w)]
+    for i, it in enumerate(cfg["status"]):
+        x = i * col + 14
+        if i:
+            sb.append(vline(i * col, 14, 58))
+        sb.append(txt(it["label"], x, 28, fs=9, font=MONO, fill=LABEL, cls="lbl",
+                      weight="600", ls=1.4))
+        sb.append(txt(it["value"], x, 49, fs=s.val, font=MONO, fill=INK, cls="ink", weight="500"))
+    sb.append(hline(71.5, 0, w))
+    place("".join(sb), 72, 26)
+
+    for group in (cfg["featured"], cfg["current"]):
+        gb = [txt(group["heading"], 2, 22, fs=15, font=UI, fill=INK, cls="ink", weight="500"),
+              hline(35, 2, w - 2)]
+        items = group["items"]
+        per_row = 3 if group is cfg["featured"] else 2
+        cw = w / per_row
+        rows = [items[i:i + per_row] for i in range(0, len(items), per_row)]
+        gy = 58.0
+        for row in rows:
+            bottom = gy
+            for i, it in enumerate(row):
+                part, ey = entry(it, i * cw + (4 if i == 0 else 22), cw - 36, s, gy + 12)
+                gb.append(part)
+                bottom = max(bottom, ey)
+            for i in range(1, len(row)):
+                gb.append(vline(i * cw, gy, bottom + 12))
+            gy = bottom + 34
+            if row is not rows[-1]:
+                gb.append(hline(gy - 16, 0, w, soft=True))
+        gb.append(hline(gy - 6, 0, w))
+        place("".join(gb), gy + 4, 22)
+
+    cb = [txt(cfg["certifications"]["heading"], 2, 22, fs=15, font=UI, fill=INK,
+              cls="ink", weight="500"), hline(35, 2, w - 2)]
+    cy = 52.0
+    for i, c in enumerate(cfg["certifications"]["items"]):
+        cw2, ic = w / 2, 26
+        cx = (i % 2) * cw2
+        ry = cy + (i // 2) * 76
+        cb.append(f'<rect x="{cx + 4:.1f}" y="{ry:.1f}" width="{cw2 - 20:.1f}" height="62" '
+                  f'rx="10" fill="{CARD}" stroke="{LINE}" class="cd"/>')
+        cb.append(f'<rect x="{cx + 20:.1f}" y="{ry + 18:.1f}" width="{ic}" height="{ic}" '
+                  f'rx="8" fill="{c["color"]}"/>')
+        cb.append(txt(c["mark"], cx + 20 + ic / 2, ry + 36, fs=10.5, font=MONO,
+                      fill="#ffffff", cls="", weight="700", anchor="middle"))
+        cb.append(txt(c["label"], cx + 60, ry + 27, fs=12.5, font=UI, fill=INK,
+                      cls="ink", weight="600"))
+        cb.append(txt(c["detail"], cx + 60, ry + 45, fs=9, font=MONO, fill=LABEL,
+                      cls="lbl", weight="600", ls=1))
+    rows_n = (len(cfg["certifications"]["items"]) + 1) // 2
+    place("".join(cb), cy + rows_n * 76)
+
+    write("profile", s, svg(w, y, "".join(parts)))
+
+
 def pic(name: str, alt: str, *, width: str | None = None) -> str:
     w = f' width="{width}"' if width else ""
     return (
@@ -334,17 +425,8 @@ def link(url: str | None, inner: str) -> str:
 
 
 def build_readme(cfg: dict[str, Any]) -> str:
-    contacts = "".join(
-        link(c["url"], pic(f'contact-{c["id"]}', f'{c["label"]}: {c["value"]}'))
-        for c in cfg["contact"]
-    )
-    current = "".join(
-        link(it.get("url"), pic(f"current-{i}", it["title"]))
-        for i, it in enumerate(cfg["current"]["items"])
-    )
-    certs = "".join(
-        pic(f"cert-{i}", f'{c["label"]}: {c["detail"]}')
-        for i, c in enumerate(cfg["certifications"]["items"])
+    contacts = " · ".join(
+        f'[{c["label"].title()}]({c["url"]})' for c in cfg["contact"]
     )
 
     acc: list[str] = []
@@ -356,33 +438,16 @@ def build_readme(cfg: dict[str, Any]) -> str:
     acc += [f'## {cfg["certifications"]["heading"]}', ""]
     acc += [f'- **{c["label"]}**: {c["detail"]}' for c in cfg["certifications"]["items"]]
 
-    featured_alt = " ".join(it["title"] + "." for it in cfg["featured"]["items"])
-    status_alt = " ".join(f'{s["label"]}: {s["value"]}.' for s in cfg["status"])
+    alt = (f'Arthur Torres. {cfg["hero"]["headline"]} '
+           + " ".join(f'{x["label"]}: {x["value"]}.' for x in cfg["status"]))
 
     return f"""<div align="center">
-{pic("hero", f'Arthur Torres. {cfg["hero"]["headline"]}', width="100%")}
-{pic("status", status_alt, width="100%")}
-</div>
 
-<br>
+{pic("profile", alt, width="100%")}
 
-<p align="center">
 {contacts}
-</p>
 
-{pic("featured", featured_alt, width="100%")}
-
-{pic("current-header", cfg["current"]["heading"], width="100%")}
-
-<p align="center">
-{current}
-</p>
-
-{pic("certifications-header", cfg["certifications"]["heading"], width="100%")}
-
-<p align="center">
-{certs}
-</p>
+</div>
 
 <details>
 <summary>Accessible text version</summary>
@@ -420,16 +485,7 @@ def main() -> None:
     OUT_DIR.mkdir(parents=True)
 
     for s in SIZES:
-        build_hero(cfg["hero"], s)
-        build_status(cfg["status"], s)
-        for c in cfg["contact"]:
-            build_contact(c, s)
-        build_featured(cfg["featured"], s)
-        build_section("current-header", cfg["current"]["heading"], s)
-        build_current(cfg["current"]["items"], s)
-        build_section("certifications-header", cfg["certifications"]["heading"], s)
-        for i, c in enumerate(cfg["certifications"]["items"]):
-            build_cert(i, c, s)
+        build_all(cfg, s)
 
     README.write_text(build_readme(cfg), encoding="utf-8")
     print(f"{len(list(OUT_DIR.glob('*.svg')))} SVGs written")
