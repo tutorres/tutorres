@@ -1,19 +1,19 @@
 """Generate the profile README and every SVG it references from profile.yml.
 
-Why SVG instead of markdown: GitHub strips CSS from README markdown, so shipping
-pictures is the only way to control typography and layout.
+Two decisions worth explaining, both learned the hard way.
 
-Design language, deliberately borrowed from a profile Arthur liked: GitHub's own
-light palette, hairlines rather than boxes as the structural device, one serif
-italic headline, and monospace at small sizes for everything else. The restraint
-is the point. A dark card stack with big sans type reads as a template; this
-reads as a page someone set.
+Colours are inline presentation attributes rather than CSS classes, with a small
+dark-mode override appended. Browsers honour the override, so the profile works
+on both GitHub themes; offline renderers ignore it, which means this script can
+rasterise its own output and the layout can be inspected instead of guessed at.
+A stylesheet-only approach renders as unstyled text offline and hides every
+spacing mistake until it is already public.
 
-Two widths are emitted for every asset. The README picks between them with
-<picture><source media="(max-width: 480px)">, which GitHub honours.
+Filenames carry a content hash. GitHub proxies and caches README images hard, so
+replacing a file at the same path keeps serving the stale picture.
 
 Run:
-    python scripts/build_profile.py
+    python scripts/build_profile.py [--render]
 
 Everything under assets/generated/ is derived. The next build overwrites it.
 """
@@ -23,6 +23,7 @@ from __future__ import annotations
 import hashlib
 import html
 import shutil
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -33,65 +34,62 @@ ROOT = Path(__file__).resolve().parent.parent
 CONFIG = ROOT / "profile.yml"
 OUT_DIR = ROOT / "assets" / "generated"
 README = ROOT / "README.md"
+PREVIEW = ROOT / "assets" / "preview"
 
 XML_DECL = '<?xml version="1.0" encoding="UTF-8"?>'
 
-# GitHub light palette, so the cards sit on the page instead of on top of it.
-INK = "#1f2328"
-MUTED = "#57606a"
-LABEL = "#656d76"
-LINE = "#d0d7de"
-SOFT = "#eaeef2"
-CARD = "#f6f8fa"
+# Light values are inline; the media query swaps them on a dark GitHub.
+INK, INK_D = "#1f2328", "#e6edf3"
+MUTED, MUTED_D = "#57606a", "#8b949e"
+LABEL, LABEL_D = "#656d76", "#7d8590"
+LINE, LINE_D = "#d0d7de", "#30363d"
+SOFT, SOFT_D = "#eaeef2", "#21262d"
+CARD, CARD_D = "#f6f8fa", "#161b22"
 
-STYLE = f"""<style>
-.line{{stroke:{LINE};stroke-width:1}}
-.soft-line{{stroke:{SOFT};stroke-width:1}}
-.card{{fill:{CARD};stroke:{LINE};stroke-width:1}}
-.headline{{font:italic 600 {{HEADLINE}}px Georgia,'Times New Roman',serif;fill:{INK}}}
-.copy{{font:400 {{COPY}}px ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;fill:{MUTED}}}
-.label{{font:600 9px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:1.4px;fill:{LABEL}}}
-.value{{font:500 {{VALUE}}px ui-monospace,SFMono-Regular,Menlo,monospace;fill:{INK}}}
-.section{{font:500 15px -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;fill:{INK}}}
-.title{{font:600 {{TITLE}}px -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;fill:{INK}}}
-.category{{font:600 9px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:1.1px;fill:{LABEL}}}
-.desc{{font:400 {{DESC}}px -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;fill:{MUTED}}}
-.arrow{{stroke:{LABEL};fill:none;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}}
-.mark{{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#ffffff}}
-</style>"""
+DARK = (
+    "<style>@media(prefers-color-scheme:dark){"
+    f".ink{{fill:{INK_D}}}.muted{{fill:{MUTED_D}}}.lbl{{fill:{LABEL_D}}}"
+    f".ln{{stroke:{LINE_D}}}.sln{{stroke:{SOFT_D}}}"
+    f".cd{{fill:{CARD_D};stroke:{LINE_D}}}.ar{{stroke:{LABEL_D}}}"
+    "}</style>"
+)
+
+SERIF = "Georgia,'Times New Roman',serif"
+MONO = "ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace"
+UI = "-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+
+SERIF_R, MONO_R, UI_R = 0.47, 0.60, 0.53
 
 
 @dataclass(frozen=True)
 class Size:
     name: str
     width: int
-    headline: float
+    head: float
     copy: float
-    value: float
+    val: float
     title: float
     desc: float
-    card_w: int
+    card: int
 
 
-DESKTOP = Size("desktop", 880, 34, 11, 13, 14, 12.5, 390)
-MOBILE = Size("mobile", 420, 17, 9, 11, 12.5, 11, 420)
+DESKTOP = Size("desktop", 880, 32, 11.5, 13, 14, 12.5, 430)
+MOBILE = Size("mobile", 420, 19, 10, 11.5, 13, 11.5, 420)
 SIZES = (DESKTOP, MOBILE)
 
-# No font metrics at build time, so text is laid out with an estimated advance.
-SERIF_RATIO = 0.46
-MONO_RATIO = 0.60
-UI_RATIO = 0.53
+ASSETS: dict[str, str] = {}
 
 
 def esc(s: str) -> str:
     return html.escape(s, quote=False)
 
 
-def wrap(s: str, font_size: float, max_width: float, ratio: float) -> list[str]:
-    words, lines, cur = s.split(), [], ""
-    for w in words:
+def wrap(s: str, fs: float, maxw: float, ratio: float) -> list[str]:
+    lines: list[str] = []
+    cur = ""
+    for w in s.split():
         cand = f"{cur} {w}".strip()
-        if cur and len(cand) * font_size * ratio > max_width:
+        if cur and len(cand) * fs * ratio > maxw:
             lines.append(cur)
             cur = w
         else:
@@ -101,204 +99,219 @@ def wrap(s: str, font_size: float, max_width: float, ratio: float) -> list[str]:
     return lines
 
 
-def tspans(lines: list[str], x: float, dy: float) -> str:
-    out = [f'<tspan x="{x:.1f}" dy="0">{esc(lines[0])}</tspan>']
-    out += [f'<tspan x="{x:.1f}" dy="{dy:.0f}">{esc(l)}</tspan>' for l in lines[1:]]
-    return "".join(out)
-
-
-def svg(width: float, height: float, body: str, size: Size) -> str:
-    style = (
-        STYLE.replace("{HEADLINE}", f"{size.headline:g}")
-        .replace("{COPY}", f"{size.copy:g}")
-        .replace("{VALUE}", f"{size.value:g}")
-        .replace("{TITLE}", f"{size.title:g}")
-        .replace("{DESC}", f"{size.desc:g}")
-    )
+def txt(
+    s: str,
+    x: float,
+    y: float,
+    *,
+    fs: float,
+    font: str,
+    fill: str,
+    cls: str,
+    weight: str = "400",
+    ls: float = 0,
+    italic: bool = False,
+    anchor: str = "start",
+) -> str:
+    style = ' font-style="italic"' if italic else ""
+    spacing = f' letter-spacing="{ls}"' if ls else ""
     return (
-        f'{XML_DECL}<svg xmlns="http://www.w3.org/2000/svg" width="{width:.0f}" '
-        f'height="{height:.0f}" viewBox="0 0 {width:.0f} {height:.0f}">{style}{body}</svg>'
+        f'<text x="{x:.1f}" y="{y:.1f}" font-family="{font}" font-size="{fs:g}" '
+        f'font-weight="{weight}" fill="{fill}" class="{cls}" text-anchor="{anchor}"'
+        f"{style}{spacing}>{esc(s)}</text>"
     )
 
 
-ASSETS: dict[str, str] = {}
+def block(lines: list[str], x: float, y: float, lh: float, **kw: Any) -> tuple[str, float]:
+    out = "".join(txt(l, x, y + i * lh, **kw) for i, l in enumerate(lines))
+    return out, y + lh * (len(lines) - 1)
+
+
+def hline(y: float, x1: float, x2: float, soft: bool = False) -> str:
+    c, cls = (SOFT, "sln") if soft else (LINE, "ln")
+    return f'<line x1="{x1:.1f}" y1="{y:.1f}" x2="{x2:.1f}" y2="{y:.1f}" stroke="{c}" class="{cls}"/>'
+
+
+def vline(x: float, y1: float, y2: float) -> str:
+    return f'<line x1="{x:.1f}" y1="{y1:.1f}" x2="{x:.1f}" y2="{y2:.1f}" stroke="{SOFT}" class="sln"/>'
+
+
+def card_rect(w: float, h: float) -> str:
+    return (
+        f'<rect x=".5" y=".5" width="{w - 1:.1f}" height="{h - 1:.1f}" rx="10" '
+        f'fill="{CARD}" stroke="{LINE}" class="cd"/>'
+    )
+
+
+def svg(w: float, h: float, body: str) -> str:
+    return (
+        f'{XML_DECL}<svg xmlns="http://www.w3.org/2000/svg" width="{w:.0f}" '
+        f'height="{h:.0f}" viewBox="0 0 {w:.0f} {h:.0f}">{DARK}{body}</svg>'
+    )
 
 
 def write(name: str, size: Size, content: str) -> None:
-    """Writes the asset under a content-hashed filename and records the mapping.
-
-    GitHub proxies and caches README images aggressively, so replacing a file at
-    the same path keeps serving the stale picture. Hashing the name means every
-    change is a new URL and the cache is bypassed by construction.
-    """
     key = f"{name}-{size.name}"
-    digest = hashlib.sha1(content.encode("utf-8")).hexdigest()[:8]
-    filename = f"{key}.{digest}.svg"
-    (OUT_DIR / filename).write_text(content, encoding="utf-8")
-    ASSETS[key] = filename
-
-
-def rule(y: float, w: float, cls: str = "line", x: float = 2) -> str:
-    return f'<line class="{cls}" x1="{x}" y1="{y:.1f}" x2="{w - x:.1f}" y2="{y:.1f}"/>'
+    digest = hashlib.sha1(content.encode()).hexdigest()[:8]
+    fn = f"{key}.{digest}.svg"
+    (OUT_DIR / fn).write_text(content, encoding="utf-8")
+    ASSETS[key] = fn
 
 
 # --------------------------------------------------------------------------- #
 
 
-def build_hero(cfg: dict[str, Any], size: Size) -> None:
-    """Geometry copied from the reference profile rather than derived, so the
-    rhythm matches instead of approximating it."""
-    w = size.width
-    head = wrap(cfg["headline"], size.headline, w - 8, SERIF_RATIO)
-    copy = wrap(cfg["copy"], size.copy, w - 12, MONO_RATIO)
+def build_hero(cfg: dict[str, Any], s: Size) -> None:
+    w, pad = s.width, 4
+    head = wrap(cfg["headline"], s.head, w - pad * 2, SERIF_R)
+    copy = wrap(cfg["copy"], s.copy, w - pad * 2, MONO_R)
 
-    head_lh = size.headline * 1.25
-    copy_lh = size.copy * 1.5
-    head_y = 58 if size.name == "desktop" else 34
-    copy_y = 92 if size.name == "desktop" else 58
-
-    body = [rule(8, w)]
-    body.append(f'<text x="2" y="{head_y}" class="headline">{tspans(head, 2, head_lh)}</text>')
-    body.append(f'<text x="4" y="{copy_y + head_lh * (len(head) - 1):.1f}" class="copy">'
-                f'{tspans(copy, 4, copy_lh)}</text>')
-    bottom = copy_y + head_lh * (len(head) - 1) + copy_lh * (len(copy) - 1) + 22
-    body.append(rule(bottom, w))
-    write("hero", size, svg(w, bottom + 9, "".join(body), size))
+    b = [hline(6, 2, w - 2)]
+    y = 16 + s.head
+    part, y = block(head, pad, y, s.head * 1.28, fs=s.head, font=SERIF, fill=INK,
+                    cls="ink", weight="600", italic=True)
+    b.append(part)
+    y += s.copy * 2.7
+    part, y = block(copy, pad + 1, y, s.copy * 1.6, fs=s.copy, font=MONO, fill=MUTED,
+                    cls="muted")
+    b.append(part)
+    y += 20
+    b.append(hline(y, 2, w - 2))
+    write("hero", s, svg(w, y + 8, "".join(b)))
 
 
-def build_status(items: list[dict[str, str]], size: Size) -> None:
-    w = size.width
-    if size.name == "mobile":
-        row = 34.0
-        h = row * len(items) + 10
-        body = [rule(0.5, w, x=0)]
+def build_status(items: list[dict[str, str]], s: Size) -> None:
+    w = s.width
+    if s.name == "mobile":
+        row = 38.0
+        b = [hline(0.5, 0, w)]
         for i, it in enumerate(items):
-            y = 14 + i * row
-            body.append(f'<text x="12" y="{y:.1f}" class="label">{esc(it["label"])}</text>')
-            body.append(f'<text x="12" y="{y + 15:.1f}" class="value">{esc(it["value"])}</text>')
+            y = 22 + i * row
             if i:
-                body.append(rule(y - 12, w, "soft-line", x=0))
-        body.append(rule(h - 0.5, w, x=0))
-        write("status", size, svg(w, h, "".join(body), size))
+                b.append(hline(y - 16, 0, w, soft=True))
+            b.append(txt(it["label"], 12, y, fs=9, font=MONO, fill=LABEL, cls="lbl",
+                         weight="600", ls=1.4))
+            b.append(txt(it["value"], 12, y + 17, fs=s.val, font=MONO, fill=INK,
+                         cls="ink", weight="500"))
+        h = 22 + row * len(items)
+        b.append(hline(h - 0.5, 0, w))
+        write("status", s, svg(w, h, "".join(b)))
         return
 
     col = w / len(items)
-    body = [rule(0.5, w, x=0)]
+    b = [hline(0.5, 0, w)]
     for i, it in enumerate(items):
-        x = i * col + 12
+        x = i * col + 14
         if i:
-            body.append(f'<line class="line" x1="{i * col:.1f}" y1="16" x2="{i * col:.1f}" y2="56"/>')
-        body.append(f'<text x="{x:.1f}" y="28" class="label">{esc(it["label"])}</text>')
-        body.append(f'<text x="{x:.1f}" y="49" class="value">{esc(it["value"])}</text>')
-    body.append(rule(71.5, w, x=0))
-    write("status", size, svg(w, 72, "".join(body), size))
+            b.append(vline(i * col, 14, 58))
+        b.append(txt(it["label"], x, 28, fs=9, font=MONO, fill=LABEL, cls="lbl",
+                     weight="600", ls=1.4))
+        b.append(txt(it["value"], x, 49, fs=s.val, font=MONO, fill=INK, cls="ink",
+                     weight="500"))
+    b.append(hline(71.5, 0, w))
+    write("status", s, svg(w, 72, "".join(b)))
 
 
-def build_section(name: str, heading: str, size: Size) -> None:
-    body = f'<text x="2" y="22" class="section">{esc(heading)}</text>' + rule(35, size.width)
-    write(name, size, svg(size.width, 42, body, size))
+def build_section(name: str, heading: str, s: Size) -> None:
+    b = txt(heading, 2, 22, fs=15, font=UI, fill=INK, cls="ink", weight="500")
+    b += hline(35, 2, s.width - 2)
+    write(name, s, svg(s.width, 42, b))
 
 
-def build_contact(item: dict[str, Any], size: Size) -> None:
-    w = 265 if size.name == "desktop" else 200
-    h = 76 if size.name == "desktop" else 64
-    icon = 28 if size.name == "desktop" else 24
-    tx = 20 + icon + 12
-
-    body = [
-        f'<rect class="card" x=".5" y=".5" width="{w - 1}" height="{h - 1}" rx="10"/>',
-        f'<rect x="20" y="{(h - icon) / 2:.1f}" width="{icon}" height="{icon}" rx="7" '
+def build_contact(item: dict[str, Any], s: Size) -> None:
+    w = 208 if s.name == "desktop" else 200
+    h, ic = 68, 26
+    tx = 16 + ic + 12
+    b = [
+        card_rect(w, h),
+        f'<rect x="16" y="{(h - ic) / 2:.1f}" width="{ic}" height="{ic}" rx="7" '
         f'fill="{item["color"]}"/>',
-        f'<text x="{20 + icon / 2:.1f}" y="{h / 2 + 4:.1f}" class="mark" '
-        f'text-anchor="middle">{esc(item["mark"])}</text>',
-        f'<text x="{tx}" y="{h / 2 - 9:.1f}" class="label">{esc(item["label"])}</text>',
-        f'<text x="{tx}" y="{h / 2 + 14:.1f}" class="value">{esc(item["value"])}</text>',
-        f'<path d="M{w - 24} {h / 2 + 4:.1f} L{w - 16} {h / 2 - 4:.1f} '
-        f'M{w - 21} {h / 2 - 4:.1f} H{w - 16} V{h / 2 + 1:.1f}" class="arrow"/>',
+        txt(item["mark"], 16 + ic / 2, h / 2 + 4, fs=10.5, font=MONO, fill="#ffffff",
+            cls="", weight="700", anchor="middle"),
+        txt(item["label"], tx, h / 2 - 8, fs=8.5, font=MONO, fill=LABEL, cls="lbl",
+            weight="600", ls=1.3),
+        txt(item["value"], tx, h / 2 + 13, fs=11.5, font=MONO, fill=INK, cls="ink",
+            weight="600"),
+        f'<path d="M{w - 22} {h / 2 + 4:.1f} L{w - 15} {h / 2 - 3:.1f} '
+        f'M{w - 20} {h / 2 - 3:.1f} H{w - 15} V{h / 2 + 2:.1f}" fill="none" '
+        f'stroke="{LABEL}" class="ar" stroke-width="1.2" stroke-linecap="round" '
+        f'stroke-linejoin="round"/>',
     ]
-    write(f'contact-{item["id"]}', size, svg(w, h, "".join(body), size))
+    write(f'contact-{item["id"]}', s, svg(w, h, "".join(b)))
 
 
-def _entry(item: dict[str, Any], x: float, col_w: float, size: Size) -> tuple[str, float]:
-    """One featured/current entry laid out in a column. Returns body and bottom y."""
-    title = wrap(item["title"], size.title, col_w, UI_RATIO)
-    cat = wrap(item["category"], 9, col_w, MONO_RATIO)
-    desc = wrap(item["body"], size.desc, col_w, UI_RATIO)
+def entry(item: dict[str, Any], x: float, colw: float, s: Size, y0: float) -> tuple[str, float]:
+    """Category label, then title, then body. Returns the markup and the baseline
+    of the last line so callers can size the container to the content."""
+    b = []
+    part, y = block(wrap(item["category"], 9, colw, MONO_R), x, y0, 11, fs=9,
+                    font=MONO, fill=LABEL, cls="lbl", weight="600", ls=1.1)
+    b.append(part)
+    y += s.title * 1.75
+    part, y = block(wrap(item["title"], s.title, colw, UI_R), x, y, s.title * 1.3,
+                    fs=s.title, font=UI, fill=INK, cls="ink", weight="600")
+    b.append(part)
+    y += s.desc * 1.95
+    part, y = block(wrap(item["body"], s.desc, colw, UI_R), x, y, s.desc * 1.45,
+                    fs=s.desc, font=UI, fill=MUTED, cls="muted")
+    b.append(part)
+    return "".join(b), y
 
-    t_lh, d_lh = size.title * 1.3, size.desc * 1.35
-    y = 22 + size.title
-    parts = [f'<text x="{x:.1f}" y="{y:.1f}" class="title">{tspans(title, x, t_lh)}</text>']
-    y += t_lh * (len(title) - 1) + 22
-    parts.append(f'<text x="{x:.1f}" y="{y:.1f}" class="category">{tspans(cat, x, 11)}</text>')
-    y += 11 * (len(cat) - 1) + 24
-    parts.append(f'<text x="{x:.1f}" y="{y:.1f}" class="desc">{tspans(desc, x, d_lh)}</text>')
-    y += d_lh * (len(desc) - 1) + 16
-    return "".join(parts), y
 
+def build_featured(cfg: dict[str, Any], s: Size) -> None:
+    items, w = cfg["items"], s.width
+    b = [
+        txt(cfg["heading"], 2, 22, fs=15, font=UI, fill=INK, cls="ink", weight="500"),
+        hline(35, 2, w - 2),
+    ]
 
-def build_featured(cfg: dict[str, Any], size: Size) -> None:
-    """One asset, heading included. Three columns on desktop, stacked on mobile.
-
-    Kept as a single image (rather than one per item) to match the reference,
-    which means the block is not individually linkable. The accessible text
-    block below the images carries the links instead.
-    """
-    items = cfg["items"]
-    w = size.width
-    body = [f'<text x="2" y="22" class="section">{esc(cfg["heading"])}</text>', rule(35, w)]
-
-    if size.name == "mobile":
-        y = 44.0
-        for i, item in enumerate(items):
-            b, bottom = _entry(item, 8, w - 20, size)
-            body.append(f'<g transform="translate(0,{y:.0f})">{b}</g>')
-            y += bottom
+    if s.name == "mobile":
+        y = 66.0
+        for i, it in enumerate(items):
+            part, y = entry(it, 6, w - 16, s, y)
+            y += 28
+            b.append(part)
             if i < len(items) - 1:
-                body.append(rule(y - 6, w, "soft-line", x=0))
-        body.append(rule(y + 2, w, x=0))
-        write("featured", size, svg(w, y + 12, "".join(body), size))
+                b.append(hline(y - 15, 0, w, soft=True))
+        b.append(hline(y - 10, 0, w))
+        write("featured", s, svg(w, y, "".join(b)))
         return
 
     col = w / len(items)
     bottom = 0.0
-    for i, item in enumerate(items):
-        x = i * col + (8 if i == 0 else 20)
-        b, y = _entry(item, x, col - 34, size)
-        body.append(f'<g transform="translate(0,34)">{b}</g>')
-        bottom = max(bottom, y + 34)
+    for i, it in enumerate(items):
+        part, y = entry(it, i * col + (4 if i == 0 else 22), col - 36, s, 68)
+        b.append(part)
+        bottom = max(bottom, y)
     for i in range(1, len(items)):
-        body.append(
-            f'<line class="soft-line" x1="{i * col:.1f}" y1="54" '
-            f'x2="{i * col:.1f}" y2="{bottom + 6:.0f}"/>'
-        )
-    body.append(rule(bottom + 14, w, x=0))
-    write("featured", size, svg(w, bottom + 24, "".join(body), size))
+        b.append(vline(i * col, 50, bottom + 16))
+    b.append(hline(bottom + 26, 0, w))
+    write("featured", s, svg(w, bottom + 34, "".join(b)))
 
 
-def build_current(items: list[dict[str, Any]], size: Size) -> None:
-    """Two cards per row on desktop, one per row on mobile."""
-    cw = size.card_w
-    for i, item in enumerate(items):
-        b, y = _entry(item, 10, cw - 24, size)
-        write(f"current-{i}", size, svg(cw, y + 10, b + rule(y, cw, x=0), size))
+def build_current(items: list[dict[str, Any]], s: Size) -> None:
+    cw = s.card
+    for i, it in enumerate(items):
+        part, y = entry(it, 16, cw - 36, s, 30)
+        write(f"current-{i}", s, svg(cw, y + 24, card_rect(cw, y + 24) + part))
 
 
-def build_cert(i: int, item: dict[str, Any], size: Size) -> None:
-    w = size.card_w if size.name == "desktop" else size.width
-    h = 74 if size.name == "desktop" else 66
-    icon = 30 if size.name == "desktop" else 26
-    tx = 16 + icon + 12
-
-    body = [
-        f'<rect class="card" x=".5" y=".5" width="{w - 1}" height="{h - 1}" rx="9"/>',
-        f'<rect x="16" y="{(h - icon) / 2:.1f}" width="{icon}" height="{icon}" rx="8" '
+def build_cert(i: int, item: dict[str, Any], s: Size) -> None:
+    w = s.card if s.name == "desktop" else s.width
+    h, ic = 70, 28
+    tx = 16 + ic + 12
+    b = [
+        card_rect(w, h),
+        f'<rect x="16" y="{(h - ic) / 2:.1f}" width="{ic}" height="{ic}" rx="8" '
         f'fill="{item["color"]}"/>',
-        f'<text x="{16 + icon / 2:.1f}" y="{h / 2 + 4:.1f}" class="mark" '
-        f'text-anchor="middle">{esc(item["mark"])}</text>',
-        f'<text x="{tx}" y="{h / 2 - 6:.1f}" class="title">{esc(item["label"])}</text>',
-        f'<text x="{tx}" y="{h / 2 + 14:.1f}" class="category">{esc(item["detail"])}</text>',
+        txt(item["mark"], 16 + ic / 2, h / 2 + 4, fs=10.5, font=MONO, fill="#ffffff",
+            cls="", weight="700", anchor="middle"),
+        txt(item["label"], tx, h / 2 - 6, fs=12.5, font=UI, fill=INK, cls="ink",
+            weight="600"),
+        txt(item["detail"], tx, h / 2 + 13, fs=9, font=MONO, fill=LABEL, cls="lbl",
+            weight="600", ls=1),
     ]
-    write(f"cert-{i}", size, svg(w, h, "".join(body), size))
+    write(f"cert-{i}", s, svg(w, h, "".join(b)))
 
 
 # --------------------------------------------------------------------------- #
@@ -319,24 +332,34 @@ def link(url: str | None, inner: str) -> str:
 
 
 def build_readme(cfg: dict[str, Any]) -> str:
-    contacts = "".join(link(c["url"], pic(f'contact-{c["id"]}', f'{c["label"]}: {c["value"]}')) for c in cfg["contact"])
+    contacts = "".join(
+        link(c["url"], pic(f'contact-{c["id"]}', f'{c["label"]}: {c["value"]}'))
+        for c in cfg["contact"]
+    )
+    current = "".join(
+        link(it.get("url"), pic(f"current-{i}", it["title"]))
+        for i, it in enumerate(cfg["current"]["items"])
+    )
+    certs = "".join(
+        pic(f"cert-{i}", f'{c["label"]}: {c["detail"]}')
+        for i, c in enumerate(cfg["certifications"]["items"])
+    )
 
-    current = "".join(link(it.get("url"), pic(f"current-{i}", it["title"])) for i, it in enumerate(cfg["current"]["items"]))
-    certs = "".join(pic(f"cert-{i}", f'{c["label"]} — {c["detail"]}') for i, c in enumerate(cfg["certifications"]["items"]))
-
-    acc = ["## " + cfg["featured"]["heading"], ""]
+    acc: list[str] = []
     for group in (cfg["featured"], cfg["current"]):
-        if group is not cfg["featured"]:
-            acc += ["## " + group["heading"], ""]
+        acc += [f'## {group["heading"]}', ""]
         for it in group["items"]:
             t = f'[{it["title"]}]({it["url"]})' if it.get("url") else it["title"]
             acc += [f"### {t}", f'*{it["category"]}*', "", it["body"], ""]
-    acc += ["## " + cfg["certifications"]["heading"], ""]
-    acc += [f'- **{c["label"]}** — {c["detail"]}' for c in cfg["certifications"]["items"]]
+    acc += [f'## {cfg["certifications"]["heading"]}', ""]
+    acc += [f'- **{c["label"]}**: {c["detail"]}' for c in cfg["certifications"]["items"]]
+
+    featured_alt = " ".join(it["title"] + "." for it in cfg["featured"]["items"])
+    status_alt = " ".join(f'{s["label"]}: {s["value"]}.' for s in cfg["status"])
 
     return f"""<div align="center">
 {pic("hero", f'Arthur Torres. {cfg["hero"]["headline"]}', width="100%")}
-{pic("status", " ".join(f'{s["label"]}: {s["value"]}.' for s in cfg["status"]), width="100%")}
+{pic("status", status_alt, width="100%")}
 </div>
 
 <br>
@@ -345,7 +368,7 @@ def build_readme(cfg: dict[str, Any]) -> str:
 {contacts}
 </p>
 
-{pic("featured", " ".join(it["title"] + "." for it in cfg["featured"]["items"]), width="100%")}
+{pic("featured", featured_alt, width="100%")}
 
 {pic("current-header", cfg["current"]["heading"], width="100%")}
 
@@ -370,6 +393,23 @@ def build_readme(cfg: dict[str, Any]) -> str:
 """
 
 
+def render_previews() -> None:
+    """Rasterise every desktop asset so the layout can be eyeballed before publishing."""
+    from reportlab.graphics import renderPM
+    from svglib.svglib import svg2rlg
+
+    if PREVIEW.exists():
+        shutil.rmtree(PREVIEW)
+    PREVIEW.mkdir(parents=True)
+    for src in sorted(OUT_DIR.glob("*-desktop.*.svg")):
+        drawing = svg2rlg(str(src))
+        if drawing is None:
+            continue
+        renderPM.drawToFile(drawing, str(PREVIEW / f'{src.name.split(".")[0]}.png'),
+                            fmt="PNG", bg=0xFFFFFF, dpi=144)
+    print(f"previews in {PREVIEW.relative_to(ROOT)}")
+
+
 def main() -> None:
     cfg = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
 
@@ -377,20 +417,23 @@ def main() -> None:
         shutil.rmtree(OUT_DIR)
     OUT_DIR.mkdir(parents=True)
 
-    for size in SIZES:
-        build_hero(cfg["hero"], size)
-        build_status(cfg["status"], size)
+    for s in SIZES:
+        build_hero(cfg["hero"], s)
+        build_status(cfg["status"], s)
         for c in cfg["contact"]:
-            build_contact(c, size)
-        build_featured(cfg["featured"], size)
-        build_section("current-header", cfg["current"]["heading"], size)
-        build_current(cfg["current"]["items"], size)
-        build_section("certifications-header", cfg["certifications"]["heading"], size)
+            build_contact(c, s)
+        build_featured(cfg["featured"], s)
+        build_section("current-header", cfg["current"]["heading"], s)
+        build_current(cfg["current"]["items"], s)
+        build_section("certifications-header", cfg["certifications"]["heading"], s)
         for i, c in enumerate(cfg["certifications"]["items"]):
-            build_cert(i, c, size)
+            build_cert(i, c, s)
 
     README.write_text(build_readme(cfg), encoding="utf-8")
     print(f"{len(list(OUT_DIR.glob('*.svg')))} SVGs written")
+
+    if "--render" in sys.argv:
+        render_previews()
 
 
 if __name__ == "__main__":
