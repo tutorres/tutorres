@@ -1,1 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="92" height="34" viewBox="0 0 92 34" role="img"><rect x="0.5" y="0.5" width="91.0" height="33.0" rx="17.0" fill="none" stroke="#27272a" stroke-width="1"/><text x="46.0" y="21.4" font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace" font-size="12.5" font-weight="400" fill="#a1a1aa" text-anchor="middle">LinkedIn</text></svg>
+<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="265" height="76" viewBox="0 0 265 76"><style>
+.line{stroke:#d0d7de;stroke-width:1}
+.soft-line{stroke:#eaeef2;stroke-width:1}
+.card{fill:#f6f8fa;stroke:#d0d7de;stroke-width:1}
+.headline{font:italic 600 34px Georgia,'Times New Roman',serif;fill:#1f2328}
+.copy{font:400 11px ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;fill:#57606a}
+.label{font:600 9px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:1.4px;fill:#656d76}
+.value{font:500 13px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#1f2328}
+.section{font:500 15px -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;fill:#1f2328}
+.title{font:600 14px -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;fill:#1f2328}
+.category{font:600 9px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:1.1px;fill:#656d76}
+.desc{font:400 12.5px -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;fill:#57606a}
+.arrow{stroke:#656d76;fill:none;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+.mark{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#ffffff}
+</style><rect class="card" x=".5" y=".5" width="264" height="75" rx="10"/><rect x="20" y="24.0" width="28" height="28" rx="7" fill="#0A66C2"/><text x="34.0" y="42.0" class="mark" text-anchor="middle">in</text><text x="60" y="29.0" class="label">LINKEDIN</text><text x="60" y="52.0" class="value">torres-arthur</text><path d="M241 42.0 L249 34.0 M244 34.0 H249 V39.0" class="arrow"/></svg>
