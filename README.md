@@ -20,8 +20,7 @@
 <picture><source media="(max-width: 480px)" srcset="./assets/generated/current-0-mobile.svg"><img src="./assets/generated/current-0-desktop.svg" width="100%" alt="AI &amp; Automation @ Banco Inter"></picture>
 <picture><source media="(max-width: 480px)" srcset="./assets/generated/current-1-mobile.svg"><img src="./assets/generated/current-1-desktop.svg" width="100%" alt="LLM for Market Prediction"></picture>
 <picture><source media="(max-width: 480px)" srcset="./assets/generated/current-2-mobile.svg"><img src="./assets/generated/current-2-desktop.svg" width="100%" alt="JobFinder"></picture>
-<picture><source media="(max-width: 480px)" srcset="./assets/generated/current-3-mobile.svg"><img src="./assets/generated/current-3-desktop.svg" width="100%" alt="TMB Scan"></picture>
-<a href="https://torres-dev-ai.vercel.app"><picture><source media="(max-width: 480px)" srcset="./assets/generated/current-4-mobile.svg"><img src="./assets/generated/current-4-desktop.svg" width="100%" alt="torres.dev"></picture></a>
+<a href="https://torres-dev-ai.vercel.app"><picture><source media="(max-width: 480px)" srcset="./assets/generated/current-3-mobile.svg"><img src="./assets/generated/current-3-desktop.svg" width="100%" alt="torres.dev"></picture></a>
 
 <picture><source media="(max-width: 480px)" srcset="./assets/generated/certifications-header-mobile.svg"><img src="./assets/generated/certifications-header-desktop.svg" width="100%" alt="Certifications"></picture>
 
@@ -65,11 +64,6 @@ Hybrid models combining financial time series, sentiment extracted by LLMs and c
 *AGENTIC PIPELINE*
 
 Remote job pipeline that retrieves, scores and explains matches against a profile, built to be measured rather than demoed.
-
-### TMB Scan
-*NEXT.JS · REACT · SUPABASE*
-
-Physical assessment platform for a paying client. Structured evaluations turned into professional PDF reports.
 
 ### [torres.dev](https://torres-dev-ai.vercel.app)
 *PORTFOLIO*

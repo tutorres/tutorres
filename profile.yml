@@ -78,11 +78,6 @@ current:
         profile, built to be measured rather than demoed.
       # No url until the repo is public. Linking to the profile from the profile
       # is a dead end, and publishing it needs the IP clause checked first.
-    - label: "TMB Scan"
-      note: "NEXT.JS · REACT · SUPABASE"
-      body: >-
-        Physical assessment platform for a paying client. Structured evaluations turned
-        into professional PDF reports.
     - label: "torres.dev"
       note: "PORTFOLIO"
       body: >-
