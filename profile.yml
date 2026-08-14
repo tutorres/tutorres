@@ -71,13 +71,6 @@ current:
       body: >-
         Hybrid models combining financial time series, sentiment extracted by LLMs and
         constrained portfolio optimization, benchmarked against each approach alone.
-    - label: "JobFinder"
-      note: "AGENTIC PIPELINE"
-      body: >-
-        Remote job pipeline that retrieves, scores and explains matches against a
-        profile, built to be measured rather than demoed.
-      # No url until the repo is public. Linking to the profile from the profile
-      # is a dead end, and publishing it needs the IP clause checked first.
     - label: "torres.dev"
       note: "PORTFOLIO"
       body: >-
