@@ -9,9 +9,6 @@ rasterise its own output and the layout can be inspected instead of guessed at.
 A stylesheet-only approach renders as unstyled text offline and hides every
 spacing mistake until it is already public.
 
-Filenames carry a content hash. GitHub proxies and caches README images hard, so
-replacing a file at the same path keeps serving the stale picture.
-
 Run:
     python scripts/build_profile.py [--render]
 
@@ -20,7 +17,6 @@ Everything under assets/generated/ is derived. The next build overwrites it.
 
 from __future__ import annotations
 
-import hashlib
 import html
 import shutil
 import sys
@@ -149,9 +145,17 @@ def svg(w: float, h: float, body: str) -> str:
 
 
 def write(name: str, size: Size, content: str) -> None:
+    """Stable filenames, deliberately.
+
+    An earlier version hashed the filename to defeat GitHub's image proxy. That
+    proxy is not in the path: README images living in the same repo are served
+    straight from /raw/, so there was no cache to defeat. Renaming every asset on
+    every build only guaranteed that any cached copy of the rendered README
+    pointed at files that had just been deleted, which is what produced the
+    broken images.
+    """
     key = f"{name}-{size.name}"
-    digest = hashlib.sha1(content.encode()).hexdigest()[:8]
-    fn = f"{key}.{digest}.svg"
+    fn = f"{key}.svg"
     (OUT_DIR / fn).write_text(content, encoding="utf-8")
     ASSETS[key] = fn
 
