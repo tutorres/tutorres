@@ -20,6 +20,7 @@ Everything under assets/generated/ is derived. The next build overwrites it.
 
 from __future__ import annotations
 
+import hashlib
 import html
 import shutil
 from dataclasses import dataclass
@@ -120,8 +121,21 @@ def svg(width: float, height: float, body: str, size: Size) -> str:
     )
 
 
+ASSETS: dict[str, str] = {}
+
+
 def write(name: str, size: Size, content: str) -> None:
-    (OUT_DIR / f"{name}-{size.name}.svg").write_text(content, encoding="utf-8")
+    """Writes the asset under a content-hashed filename and records the mapping.
+
+    GitHub proxies and caches README images aggressively, so replacing a file at
+    the same path keeps serving the stale picture. Hashing the name means every
+    change is a new URL and the cache is bypassed by construction.
+    """
+    key = f"{name}-{size.name}"
+    digest = hashlib.sha1(content.encode("utf-8")).hexdigest()[:8]
+    filename = f"{key}.{digest}.svg"
+    (OUT_DIR / filename).write_text(content, encoding="utf-8")
+    ASSETS[key] = filename
 
 
 def rule(y: float, w: float, cls: str = "line", x: float = 2) -> str:
@@ -223,28 +237,40 @@ def _entry(item: dict[str, Any], x: float, col_w: float, size: Size) -> tuple[st
 
 
 def build_featured(cfg: dict[str, Any], size: Size) -> None:
-    """Desktop: three columns in one SVG. Mobile: one card per item."""
+    """One asset, heading included. Three columns on desktop, stacked on mobile.
+
+    Kept as a single image (rather than one per item) to match the reference,
+    which means the block is not individually linkable. The accessible text
+    block below the images carries the links instead.
+    """
     items = cfg["items"]
+    w = size.width
+    body = [f'<text x="2" y="22" class="section">{esc(cfg["heading"])}</text>', rule(35, w)]
+
     if size.name == "mobile":
+        y = 44.0
         for i, item in enumerate(items):
-            b, y = _entry(item, 8, size.width - 20, size)
-            write(f"featured-{i}", size, svg(size.width, y + 10, b + rule(y, size.width, x=0), size))
+            b, bottom = _entry(item, 8, w - 20, size)
+            body.append(f'<g transform="translate(0,{y:.0f})">{b}</g>')
+            y += bottom
+            if i < len(items) - 1:
+                body.append(rule(y - 6, w, "soft-line", x=0))
+        body.append(rule(y + 2, w, x=0))
+        write("featured", size, svg(w, y + 12, "".join(body), size))
         return
 
-    w = size.width
     col = w / len(items)
-    body = [f'<text x="2" y="22" class="section">{esc(cfg["heading"])}</text>', rule(35, w)]
     bottom = 0.0
     for i, item in enumerate(items):
         x = i * col + (8 if i == 0 else 20)
         b, y = _entry(item, x, col - 34, size)
         body.append(f'<g transform="translate(0,34)">{b}</g>')
         bottom = max(bottom, y + 34)
-        if i:
-            body.append(
-                f'<line class="soft-line" x1="{i * col:.1f}" y1="54" '
-                f'x2="{i * col:.1f}" y2="{bottom + 6:.0f}"/>'
-            )
+    for i in range(1, len(items)):
+        body.append(
+            f'<line class="soft-line" x1="{i * col:.1f}" y1="54" '
+            f'x2="{i * col:.1f}" y2="{bottom + 6:.0f}"/>'
+        )
     body.append(rule(bottom + 14, w, x=0))
     write("featured", size, svg(w, bottom + 24, "".join(body), size))
 
@@ -282,8 +308,8 @@ def pic(name: str, alt: str, *, width: str | None = None) -> str:
     w = f' width="{width}"' if width else ""
     return (
         "<picture>"
-        f'<source media="(max-width: 480px)" srcset="./assets/generated/{name}-mobile.svg">'
-        f'<img src="./assets/generated/{name}-desktop.svg"{w} alt="{esc(alt)}">'
+        f'<source media="(max-width: 480px)" srcset="./assets/generated/{ASSETS[name + "-mobile"]}">'
+        f'<img src="./assets/generated/{ASSETS[name + "-desktop"]}"{w} alt="{esc(alt)}">'
         "</picture>"
     )
 
@@ -295,10 +321,6 @@ def link(url: str | None, inner: str) -> str:
 def build_readme(cfg: dict[str, Any]) -> str:
     contacts = "".join(link(c["url"], pic(f'contact-{c["id"]}', f'{c["label"]}: {c["value"]}')) for c in cfg["contact"])
 
-    featured_mobile = "".join(
-        link(it.get("url"), pic(f"featured-{i}", it["title"], width="100%"))
-        for i, it in enumerate(cfg["featured"]["items"])
-    )
     current = "".join(link(it.get("url"), pic(f"current-{i}", it["title"])) for i, it in enumerate(cfg["current"]["items"]))
     certs = "".join(pic(f"cert-{i}", f'{c["label"]} — {c["detail"]}') for i, c in enumerate(cfg["certifications"]["items"]))
 
@@ -323,9 +345,7 @@ def build_readme(cfg: dict[str, Any]) -> str:
 {contacts}
 </p>
 
-<picture><source media="(max-width: 480px)" srcset="./assets/generated/featured-header-mobile.svg"><img src="./assets/generated/featured-header-desktop.svg" width="100%" alt="{esc(cfg["featured"]["heading"])}"></picture>
-
-{featured_mobile}
+{pic("featured", " ".join(it["title"] + "." for it in cfg["featured"]["items"]), width="100%")}
 
 {pic("current-header", cfg["current"]["heading"], width="100%")}
 
@@ -362,7 +382,6 @@ def main() -> None:
         build_status(cfg["status"], size)
         for c in cfg["contact"]:
             build_contact(c, size)
-        build_section("featured-header", cfg["featured"]["heading"], size)
         build_featured(cfg["featured"], size)
         build_section("current-header", cfg["current"]["heading"], size)
         build_current(cfg["current"]["items"], size)
