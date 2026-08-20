@@ -16,14 +16,17 @@ hero:
   headline_lines:
     - "Shipping AI into production."
     - "Measuring what it changes."
-  copy: "LLM agents, tool design and MCP integrations in regulated finance, plus machine learning at scale."
+  # Alinhado com o About do LinkedIn de 20/08. "Applied AI Engineer" e o cargo
+  # fixado la e nao aparecia em canto nenhum daqui. MCP e machine learning
+  # sairam: ja estao nos cards logo abaixo.
+  copy: "Applied AI Engineer. Python microservices and AI agents that plug into real business workflows, inside a regulated bank. Plus LLM financial research."
 
 # Three columns, separated by hairlines. Label is uppercase mono, value is mono.
 status:
   - label: "WORKING"
     value: "AI & Automation @ Banco Inter"
   - label: "RESEARCHING"
-    value: "LLM for Market Prediction"
+    value: "LLM Financial Research"
   - label: "STUDYING"
     value: "Computer Engineering @ CEFET-MG"
 
@@ -79,7 +82,7 @@ current:
       body: "Production agents under audit and governance constraints, and the Python automations around them."
       logo: assets/brands/inter.png
       logo_h: 13     # wordmark 3.96:1, baixo para nao dominar a linha
-    - title: "LLM for Market Prediction"
+    - title: "LLM Financial Research"
       category: "UNDERGRADUATE RESEARCH · CEFET-MG"
       body: "Hybrid models over financial time series and LLM sentiment, benchmarked against each approach alone."
       logo: assets/brands/cefetmg.png

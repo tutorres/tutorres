@@ -1,6 +1,6 @@
 <div align="center">
 
-<picture><source media="(max-width: 480px)" srcset="./assets/generated/profile-mobile.svg"><img src="./assets/generated/profile-desktop.svg" width="100%" alt="Arthur Torres. Shipping AI into production. Measuring what it changes. WORKING: AI &amp; Automation @ Banco Inter. RESEARCHING: LLM for Market Prediction. STUDYING: Computer Engineering @ CEFET-MG."></picture>
+<picture><source media="(max-width: 480px)" srcset="./assets/generated/profile-mobile.svg"><img src="./assets/generated/profile-desktop.svg" width="100%" alt="Arthur Torres. Shipping AI into production. Measuring what it changes. WORKING: AI &amp; Automation @ Banco Inter. RESEARCHING: LLM Financial Research. STUDYING: Computer Engineering @ CEFET-MG."></picture>
 
 [Linkedin](https://linkedin.com/in/torres-arthur) · [Email](mailto:arthuroliveiratorres@gmail.com) · [Github](https://github.com/tutorres) · [Website](https://torres-dev-ai.vercel.app)
 
@@ -28,7 +28,7 @@ Four silent failures. One touched 11 rows, another touched 36 million. Neither t
 
 Production agents under audit and governance constraints, and the Python automations around them.
 
-### LLM for Market Prediction
+### LLM Financial Research
 *UNDERGRADUATE RESEARCH · CEFET-MG*
 
 Hybrid models over financial time series and LLM sentiment, benchmarked against each approach alone.
