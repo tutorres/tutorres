@@ -7,7 +7,15 @@
 # the next build overwrites them.
 
 hero:
+  # headline is the single source for the README alt text. headline_lines is how
+  # it gets drawn: one entry per rendered line. Set it, because the wrap fallback
+  # estimates width from a character count and Georgia Bold Italic is 15% wider
+  # than that estimate, which is what clipped this headline before.
+  # Budget at 32px: roughly 48 characters per line.
   headline: "Shipping AI into production. Measuring what it changes."
+  headline_lines:
+    - "Shipping AI into production."
+    - "Measuring what it changes."
   copy: "LLM agents, tool design and MCP integrations in regulated finance, plus machine learning at scale."
 
 # Three columns, separated by hairlines. Label is uppercase mono, value is mono.

@@ -54,6 +54,30 @@ UI = "-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
 
 SERIF_R, MONO_R, UI_R = 0.47, 0.60, 0.53
 
+# The hero is the only serif text drawn at weight 600, and Georgia ships no 600
+# face, so the browser falls back to Georgia Bold Italic. Measured against the
+# real face that runs at 0.541 rather than SERIF_R's 0.47, a 15% underestimate:
+# wrap() decided the headline fit on one line and the extra 80px were clipped at
+# the viewBox edge. Machines without Georgia fall back to Times New Roman Bold
+# Italic, which is narrower and fits, which is why the clipping only showed up
+# on some screens. Kept separate from SERIF_R so regular-weight serif, if it is
+# ever used, keeps its own calibration.
+SERIF_BOLD_R = 0.56
+
+
+def hero_lines(hero: dict[str, Any], s: Size, maxw: float) -> list[str]:
+    """Explicit line breaks win over the estimator.
+
+    wrap() guesses width from a character-count ratio, which is a guess about a
+    font it cannot see. For the one line of type that carries the whole page,
+    let profile.yml say where the break goes: headline_lines is authored, the
+    wrap is the fallback for anyone who does not set it.
+    """
+    explicit = hero.get("headline_lines")
+    if explicit:
+        return [str(line) for line in explicit]
+    return wrap(hero["headline"], s.head, maxw, SERIF_BOLD_R)
+
 
 @dataclass(frozen=True)
 class Size:
@@ -165,7 +189,7 @@ def write(name: str, size: Size, content: str) -> None:
 
 def build_hero(cfg: dict[str, Any], s: Size) -> None:
     w, pad = s.width, 4
-    head = wrap(cfg["headline"], s.head, w - pad * 2, SERIF_R)
+    head = hero_lines(cfg, s, w - pad * 2)
     copy = wrap(cfg["copy"], s.copy, w - pad * 2, MONO_R)
 
     b = [hline(6, 2, w - 2)]
@@ -339,7 +363,7 @@ def build_all(cfg: dict[str, Any], s: Size) -> None:
         parts.append(f'<g transform="translate(0,{y:.1f})">{markup}</g>')
         y += height + gap
 
-    head = wrap(cfg["hero"]["headline"], s.head, w - 8, SERIF_R)
+    head = hero_lines(cfg["hero"], s, w - 8)
     copy = wrap(cfg["hero"]["copy"], s.copy, w - 8, MONO_R)
     hb = [hline(6, 2, w - 2)]
     hy = 16 + s.head
