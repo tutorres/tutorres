@@ -56,13 +56,16 @@ contact:
 featured:
   heading: "featured work"
   items:
+    # No Vale logo here on purpose: the challenge was open and the mark is
+    # theirs, not his. Same reason the LinkedIn copy says "open challenge".
     - title: "Predictive Maintenance at Scale"
       category: "MACHINE LEARNING · VALE DESENVOLVER"
       body: "37M telemetry records from an iron ore mine. 4.9x the operational heuristic, with the failure modes published."
       url: "https://github.com/tutorres/Vale_Desenvolver"
-    - title: "LLM Agents in a Regulated Bank"
-      category: "PRODUCTION AI · BANCO INTER"
-      body: "Nine automations in seven months, removing 1.4 full-time roles of manual work under audit constraints."
+    # "LLM Agents in a Regulated Bank" lived here and was cut: it said the same
+    # thing as the Banco Inter card under "currently working on". It also carried
+    # the only "1.4 full-time roles" left in any channel, which the LinkedIn
+    # rewrite of 20/08 had already dropped for being unreadable at a glance.
     - title: "Data Quality at 37 Million Rows"
       category: "WRITING · DATA ENGINEERING"
       body: "Four silent failures. One touched 11 rows, another touched 36 million. Neither threw an exception."
@@ -74,13 +77,19 @@ current:
     - title: "AI & Automation @ Banco Inter"
       category: "LLM AGENTS · MCP · TOOL DESIGN"
       body: "Production agents under audit and governance constraints, and the Python automations around them."
+      logo: assets/brands/inter.png
+      logo_h: 13     # wordmark 3.96:1, baixo para nao dominar a linha
     - title: "LLM for Market Prediction"
       category: "UNDERGRADUATE RESEARCH · CEFET-MG"
       body: "Hybrid models over financial time series and LLM sentiment, benchmarked against each approach alone."
+      logo: assets/brands/cefetmg.png
+      logo_h: 22     # brasao 1.56:1
     - title: "torres.dev"
       category: "PORTFOLIO · NEXT.JS"
       body: "Case studies, writing, and the evidence behind every claim on this page."
       url: "https://torres-dev-ai.vercel.app"
+      logo: assets/brands/torres.png
+      logo_h: 26     # torre 0.81:1, estreita e alta
     - title: "Financial Intelligence Dashboard"
       category: "DATA PIPELINE · LLM"
       body: "Medallion pipeline over market data with LSTM classification and a Text-to-SQL interface."

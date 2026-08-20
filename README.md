@@ -16,11 +16,6 @@
 
 37M telemetry records from an iron ore mine. 4.9x the operational heuristic, with the failure modes published.
 
-### LLM Agents in a Regulated Bank
-*PRODUCTION AI · BANCO INTER*
-
-Nine automations in seven months, removing 1.4 full-time roles of manual work under audit constraints.
-
 ### [Data Quality at 37 Million Rows](https://torres-dev-ai.vercel.app/articles/data-quality-37m-rows)
 *WRITING · DATA ENGINEERING*
 

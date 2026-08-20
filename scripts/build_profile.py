@@ -17,6 +17,7 @@ Everything under assets/generated/ is derived. The next build overwrites it.
 
 from __future__ import annotations
 
+import base64
 import html
 import shutil
 import sys
@@ -41,10 +42,16 @@ SOFT, SOFT_D = "#eaeef2", "#21262d"
 CARD, CARD_D = "#f6f8fa", "#161b22"
 
 DARK = (
-    "<style>@media(prefers-color-scheme:dark){"
+    "<style>"
+    # A brand mark that reads on white usually disappears on #0d1117. Where a
+    # -dark twin of the asset exists, both are embedded and the same media query
+    # that swaps the palette picks one.
+    ".theme-dark-only{display:none}"
+    "@media(prefers-color-scheme:dark){"
     f".ink{{fill:{INK_D}}}.muted{{fill:{MUTED_D}}}.lbl{{fill:{LABEL_D}}}"
     f".ln{{stroke:{LINE_D}}}.sln{{stroke:{SOFT_D}}}"
     f".cd{{fill:{CARD_D};stroke:{LINE_D}}}.ar{{stroke:{LABEL_D}}}"
+    ".theme-light-only{display:none}.theme-dark-only{display:inline}"
     "}</style>"
 )
 
@@ -63,6 +70,19 @@ SERIF_R, MONO_R, UI_R = 0.47, 0.60, 0.53
 # on some screens. Kept separate from SERIF_R so regular-weight serif, if it is
 # ever used, keeps its own calibration.
 SERIF_BOLD_R = 0.56
+
+# Brand marks are drawn to a fixed height and take whatever width their aspect
+# gives them, so a wordmark and a crest sit on the same optical baseline.
+LOGO_H = 20.0
+
+# Every mark sits inside a band of this height and is bottom-aligned in it, so
+# marks of different heights still share one optical baseline.
+LOGO_BAND = 26.0
+
+# Gap between the bottom of a mark and the baseline of the label under it. The
+# label is 9px, so its ascender reaches about 9px above that baseline; 14 keeps
+# a real gap instead of a near miss.
+LOGO_CLEARANCE = 14.0
 
 
 def hero_lines(hero: dict[str, Any], s: Size, maxw: float) -> list[str]:
@@ -152,6 +172,50 @@ def hline(y: float, x1: float, x2: float, soft: bool = False) -> str:
 
 def vline(x: float, y1: float, y2: float) -> str:
     return f'<line x1="{x:.1f}" y1="{y1:.1f}" x2="{x:.1f}" y2="{y2:.1f}" stroke="{SOFT}" class="sln"/>'
+
+
+def png_size(path: Path) -> tuple[int, int]:
+    """Width and height straight out of the PNG IHDR chunk.
+
+    Deriving the aspect from the file means profile.yml never carries
+    logo_width/logo_height, so a logo can never be committed stretched because
+    someone typed the wrong number.
+    """
+    head = path.read_bytes()[16:24]
+    return int.from_bytes(head[:4], "big"), int.from_bytes(head[4:], "big")
+
+
+def data_uri(relative: str, dark: bool = False) -> str:
+    path = ROOT / relative
+    if dark:
+        twin = path.with_name(f"{path.stem}-dark{path.suffix}")
+        if twin.exists():
+            path = twin
+    if path.suffix.lower() != ".png":
+        # Deliberately PNG-only. A vector SVG embedded as a data URI inside this
+        # SVG inside the README's <img> is not reliably rendered or themed by
+        # browsers, so brand artwork is rasterized once, out of band, and
+        # committed. Keeps the build dependency list at PyYAML alone.
+        raise ValueError(f"brand assets must be .png, got {path.name}")
+    return "data:image/png;base64," + base64.b64encode(path.read_bytes()).decode("ascii")
+
+
+def image(relative: str, x: float, y: float, h: float) -> tuple[str, float]:
+    """Draw a brand mark h pixels tall. Returns the markup and its drawn width."""
+    path = ROOT / relative
+    iw, ih = png_size(path)
+    w = h * iw / ih
+    attrs = (
+        f'x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" '
+        'preserveAspectRatio="xMidYMid meet"'
+    )
+    if not path.with_name(f"{path.stem}-dark{path.suffix}").exists():
+        return f'<image href="{data_uri(relative)}" {attrs}/>', w
+    return (
+        f'<g class="theme-light-only"><image href="{data_uri(relative)}" {attrs}/></g>'
+        f'<g class="theme-dark-only"><image href="{data_uri(relative, True)}" {attrs}/></g>',
+        w,
+    )
 
 
 def card_rect(w: float, h: float) -> str:
@@ -266,10 +330,30 @@ def build_contact(item: dict[str, Any], s: Size) -> None:
     write(f'contact-{item["id"]}', s, svg(w, h, "".join(b)))
 
 
-def entry(item: dict[str, Any], x: float, colw: float, s: Size, y0: float) -> tuple[str, float]:
+def entry(item: dict[str, Any], x: float, colw: float, s: Size, y0: float,
+          reserve_logo: bool = False) -> tuple[str, float]:
     """Category label, then title, then body. Returns the markup and the baseline
     of the last line so callers can size the container to the content."""
     b = []
+    y0 = float(y0)
+    if reserve_logo:
+        # The band is reserved for every card in a group where any card has a
+        # mark, logo or not. Otherwise a card without one starts its label
+        # higher than its neighbour and the row reads as misaligned.
+        y0 += LOGO_BAND + 6
+        if item.get("logo"):
+            h = float(item.get("logo_h", LOGO_H))
+            # Watch the two coordinate systems: <image y> is the top edge, while
+            # txt() takes a text baseline. Marks are bottom-aligned to a shared
+            # line set back from the label baseline, so a tall crest and a flat
+            # wordmark rest on the same edge without either touching the text.
+            #
+            # Equal height is not equal weight either: a wordmark four times
+            # wider than it is tall would swamp a crest drawn to the same height,
+            # so height is tuned per mark in profile.yml. The aspect still comes
+            # from the file, so no logo can be committed stretched.
+            mark, _ = image(item["logo"], x, y0 - LOGO_CLEARANCE - h, h)
+            b.append(mark)
     part, y = block(wrap(item["category"], 9, colw, MONO_R), x, y0, 11, fs=9,
                     font=MONO, fill=LABEL, cls="lbl", weight="600", ls=1.1)
     b.append(part)
@@ -393,14 +477,19 @@ def build_all(cfg: dict[str, Any], s: Size) -> None:
         gb = [txt(group["heading"], 2, 22, fs=15, font=UI, fill=INK, cls="ink", weight="500"),
               hline(35, 2, w - 2)]
         items = group["items"]
-        per_row = 3 if group is cfg["featured"] else 2
+        has_logo = any(it.get("logo") for it in items)
+        # Never more columns than there are cards. Dropping a featured item from
+        # three to two used to leave the third column's width as dead space with
+        # the divider still drawn into it.
+        per_row = min(3 if group is cfg["featured"] else 2, len(items))
         cw = w / per_row
         rows = [items[i:i + per_row] for i in range(0, len(items), per_row)]
         gy = 58.0
         for row in rows:
             bottom = gy
             for i, it in enumerate(row):
-                part, ey = entry(it, i * cw + (4 if i == 0 else 22), cw - 36, s, gy + 12)
+                part, ey = entry(it, i * cw + (4 if i == 0 else 22), cw - 36, s, gy + 12,
+                                 reserve_logo=has_logo)
                 gb.append(part)
                 bottom = max(bottom, ey)
             for i in range(1, len(row)):
