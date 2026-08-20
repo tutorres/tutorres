@@ -461,17 +461,27 @@ def build_all(cfg: dict[str, Any], s: Size) -> None:
     hb.append(hline(hy, 2, w - 2))
     place("".join(hb), hy + 6)
 
+    # The three status values used to be drawn as single unwrapped lines inside a
+    # strip of fixed height. Any value wider than its column ran straight under
+    # the next one: at 420px all three collided into an unreadable smear, and a
+    # long value did the same on desktop. They wrap now, and the strip grows to
+    # whichever column needs the most lines so the row still shares one baseline.
     col = w / len(cfg["status"])
+    lh = s.val * 1.5
+    columns = [wrap(it["value"], s.val, col - 28, MONO_R) for it in cfg["status"]]
+    bottom = 49 + lh * (max(len(c) for c in columns) - 1) + 23
     sb = [hline(0.5, 0, w)]
-    for i, it in enumerate(cfg["status"]):
+    for i, (it, lines) in enumerate(zip(cfg["status"], columns)):
         x = i * col + 14
         if i:
-            sb.append(vline(i * col, 14, 58))
+            sb.append(vline(i * col, 14, bottom - 14))
         sb.append(txt(it["label"], x, 28, fs=9, font=MONO, fill=LABEL, cls="lbl",
                       weight="600", ls=1.4))
-        sb.append(txt(it["value"], x, 49, fs=s.val, font=MONO, fill=INK, cls="ink", weight="500"))
-    sb.append(hline(71.5, 0, w))
-    place("".join(sb), 72, 26)
+        part, _ = block(lines, x, 49, lh, fs=s.val, font=MONO, fill=INK,
+                        cls="ink", weight="500")
+        sb.append(part)
+    sb.append(hline(bottom - 0.5, 0, w))
+    place("".join(sb), bottom, 26)
 
     for group in (cfg["featured"], cfg["current"]):
         gb = [txt(group["heading"], 2, 22, fs=15, font=UI, fill=INK, cls="ink", weight="500"),
@@ -503,10 +513,14 @@ def build_all(cfg: dict[str, Any], s: Size) -> None:
     cb = [txt(cfg["certifications"]["heading"], 2, 22, fs=15, font=UI, fill=INK,
               cls="ink", weight="500"), hline(35, 2, w - 2)]
     cy = 52.0
+    # Two columns only where two columns fit. At 420px each card had about 130px
+    # left for the text after the badge and the padding, so every label longer
+    # than "EF SET English" ran out through the right edge of its own card.
+    cert_cols = 2 if w >= 700 else 1
     for i, c in enumerate(cfg["certifications"]["items"]):
-        cw2, ic = w / 2, 26
-        cx = (i % 2) * cw2
-        ry = cy + (i // 2) * 76
+        cw2, ic = w / cert_cols, 26
+        cx = (i % cert_cols) * cw2
+        ry = cy + (i // cert_cols) * 76
         cb.append(f'<rect x="{cx + 4:.1f}" y="{ry:.1f}" width="{cw2 - 20:.1f}" height="62" '
                   f'rx="10" fill="{CARD}" stroke="{LINE}" class="cd"/>')
         cb.append(f'<rect x="{cx + 20:.1f}" y="{ry + 18:.1f}" width="{ic}" height="{ic}" '
@@ -517,7 +531,7 @@ def build_all(cfg: dict[str, Any], s: Size) -> None:
                       cls="ink", weight="600"))
         cb.append(txt(c["detail"], cx + 60, ry + 45, fs=9, font=MONO, fill=LABEL,
                       cls="lbl", weight="600", ls=1))
-    rows_n = (len(cfg["certifications"]["items"]) + 1) // 2
+    rows_n = -(-len(cfg["certifications"]["items"]) // cert_cols)
     place("".join(cb), cy + rows_n * 76)
 
     write("profile", s, svg(w, y, "".join(parts)))

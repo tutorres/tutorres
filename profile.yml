@@ -26,7 +26,7 @@ status:
   - label: "WORKING"
     value: "AI & Automation @ Banco Inter"
   - label: "RESEARCHING"
-    value: "LLM Financial Research"
+    value: "Hybrid LLM Models for Market Prediction and Financial Risk Management"
   - label: "STUDYING"
     value: "Computer Engineering @ CEFET-MG"
 
@@ -82,7 +82,7 @@ current:
       body: "Production agents under audit and governance constraints, and the Python automations around them."
       logo: assets/brands/inter.png
       logo_h: 13     # wordmark 3.96:1, baixo para nao dominar a linha
-    - title: "LLM Financial Research"
+    - title: "Hybrid LLM Models for Market Prediction and Financial Risk Management"
       category: "UNDERGRADUATE RESEARCH · CEFET-MG"
       body: "Hybrid models over financial time series and LLM sentiment, benchmarked against each approach alone."
       logo: assets/brands/cefetmg.png
