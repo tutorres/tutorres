@@ -12,14 +12,14 @@ hero:
   # estimates width from a character count and Georgia Bold Italic is 15% wider
   # than that estimate, which is what clipped this headline before.
   # Budget at 32px: roughly 48 characters per line.
-  headline: "Shipping AI into production. Measuring what it changes."
+  headline: "Shipping AI into production. Deciding what should not ship."
   headline_lines:
     - "Shipping AI into production."
-    - "Measuring what it changes."
+    - "Deciding what should not ship."
   # Alinhado com o About do LinkedIn de 20/08. "Applied AI Engineer" e o cargo
   # fixado la e nao aparecia em canto nenhum daqui. MCP e machine learning
   # sairam: ja estao nos cards logo abaixo.
-  copy: "Applied AI Engineer. Python microservices and AI agents that plug into real business workflows, inside a regulated bank. Plus LLM financial research."
+  copy: "Applied AI Engineer. I decide where AI belongs in an operational pipeline, inside a regulated bank: what becomes an agent, what stays deterministic. Plus LLM financial research."
 
 # Three columns, separated by hairlines. Label is uppercase mono, value is mono.
 status:

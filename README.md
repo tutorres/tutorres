@@ -1,6 +1,6 @@
 <div align="center">
 
-<picture><source media="(max-width: 480px)" srcset="./assets/generated/profile-mobile.svg"><img src="./assets/generated/profile-desktop.svg" width="100%" alt="Arthur Torres. Shipping AI into production. Measuring what it changes. WORKING: AI &amp; Automation @ Banco Inter. RESEARCHING: Hybrid LLM Models for Market Prediction and Financial Risk Management. STUDYING: Computer Engineering @ CEFET-MG."></picture>
+<picture><source media="(max-width: 480px)" srcset="./assets/generated/profile-mobile.svg"><img src="./assets/generated/profile-desktop.svg" width="100%" alt="Arthur Torres. Shipping AI into production. Deciding what should not ship. WORKING: AI &amp; Automation @ Banco Inter. RESEARCHING: Hybrid LLM Models for Market Prediction and Financial Risk Management. STUDYING: Computer Engineering @ CEFET-MG."></picture>
 
 [Linkedin](https://linkedin.com/in/torres-arthur) · [Email](mailto:arthuroliveiratorres@gmail.com) · [Github](https://github.com/tutorres) · [Website](https://torres-dev-ai.vercel.app)
 
